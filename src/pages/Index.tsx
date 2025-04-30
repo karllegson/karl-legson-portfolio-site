@@ -1,6 +1,4 @@
-
-import { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useScrollToSection } from '@/hooks/useScrollToSection';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import WebsiteShowcase from '@/components/WebsiteShowcase';
@@ -11,32 +9,19 @@ import Footer from '@/components/Footer';
 import BackgroundAnimation from '@/components/BackgroundAnimation';
 
 const Index = () => {
-  const location = useLocation();
-  const pageLoaded = useRef(false);
-
-  useEffect(() => {
-    // Check for scrollTo in location state
-    if (location.state && location.state.scrollTo && !pageLoaded.current) {
-      const sectionId = location.state.scrollTo;
-      setTimeout(() => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
-      pageLoaded.current = true;
-    }
-  }, [location]);
+  useScrollToSection();
 
   return (
     <div className="min-h-screen bg-dark-200 text-white">
       <BackgroundAnimation />
       <Navbar />
-      <HeroSection />
-      <WebsiteShowcase />
-      <SkillsSection />
-      <HobbiesSection />
-      <ContactSection />
+      <main>
+        <HeroSection />
+        <WebsiteShowcase />
+        <SkillsSection />
+        <HobbiesSection />
+        <ContactSection />
+      </main>
       <Footer />
     </div>
   );

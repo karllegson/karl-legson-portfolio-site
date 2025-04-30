@@ -1,8 +1,8 @@
-
 import { useState } from 'react';
 import { cn } from "@/lib/utils";
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BackButton from '@/components/BackButton';
 import { ButtonHover } from '@/components/ui/button-hover';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
@@ -16,69 +16,63 @@ const Resume = () => {
   const education = [
     {
       id: 1,
-      degree: "Master of Science in Computer Science",
-      institution: "Stanford University",
-      location: "Palo Alto, CA",
-      duration: "2018 - 2020",
-      description: "Specialized in Human-Computer Interaction and Web Technologies. Thesis focused on improving user experience in web applications through intuitive design patterns.",
-      courses: ["Advanced Web Development", "User Experience Design", "Data Visualization", "AI in Modern Applications"]
-    },
-    {
-      id: 2,
-      degree: "Bachelor of Science in Software Engineering",
-      institution: "MIT",
-      location: "Cambridge, MA",
-      duration: "2014 - 2018",
-      description: "Foundation in software development principles with focus on web and mobile technologies. Graduated with honors.",
-      courses: ["Web Programming", "Database Systems", "Software Engineering Practices", "Mobile App Development"]
+      degree: "Bachelor of Science in Business Administration, Cum Laude",
+      institution: "California State University, Stanislaus",
+      location: "Modesto, California",
+      duration: "May 2024",
+      description: "Concentration: Computer Information Systems",
+      courses: ["Database Management", "Systems Analysis", "Advanced Python Programming"]
     }
   ];
 
   const experience = [
     {
       id: 1,
-      role: "Senior Frontend Developer",
-      company: "TechFusion Inc.",
-      location: "San Francisco, CA",
-      duration: "2021 - Present",
-      description: "Leading a team of 5 developers to build modern web applications using React, TypeScript, and Tailwind CSS. Implemented design systems that improved development efficiency by 40%.",
+      role: "Web Developer Intern",
+      company: "Digital NEST",
+      location: "Modesto, California",
+      duration: "August 2024 - Present",
+      description: "Collaborate with web development interns and UI designers to develop responsive websites from Figma designs.",
       achievements: [
-        "Redesigned company flagship product, increasing user engagement by 35%",
-        "Introduced automated testing, reducing bugs in production by 60%",
-        "Mentored junior developers, leading to increased team productivity"
+        "Develop and customize WordPress websites for clients, integrating plugins and custom solutions",
+        "Design and implement front-end functionalities, including dynamic filtering, search tools, and API integrations",
+        "Utilize Git and GitHub for version control, ensuring efficient collaboration and clean code management",
+        "Participate in project scoping and daily stand-up meetings to align tasks and ensure timely project progression"
       ]
     },
     {
       id: 2,
-      role: "Web Developer",
-      company: "Digital Innovations",
-      location: "Boston, MA",
-      duration: "2020 - 2021",
-      description: "Developed responsive web applications for clients in finance and healthcare sectors using modern JavaScript frameworks.",
+      role: "SEO Content Poster",
+      company: "Level 10 Contractor",
+      location: "Remote",
+      duration: "January 2025 - Present",
+      description: "Manage and optimize website content for improved SEO and user experience.",
       achievements: [
-        "Built a patient management system that streamlined operations by 25%",
-        "Optimized website performance, improving loading speeds by 40%",
-        "Implemented accessible design features, ensuring ADA compliance"
+        "Publish and format blog posts, service area pages, and landing pages in WordPress",
+        "Optimize images with accurate titles and alt descriptions to enhance SEO and accessibility",
+        "Audit and maintain site links, ensuring seamless navigation and functional user experience",
+        "Collaborate with web developers to align content with site structure and design updates"
       ]
     },
     {
       id: 3,
-      role: "Frontend Intern",
-      company: "WebSolutions",
-      location: "New York, NY",
-      duration: "2019 (Summer)",
-      description: "Assisted in developing UI components for various client projects using React.",
+      role: "Information Technology Intern",
+      company: "Stanislaus Union School District",
+      location: "Modesto, California",
+      duration: "January 2024 - May 2024",
+      description: "Provided technical support and maintenance across multiple school sites.",
       achievements: [
-        "Contributed to the development of a component library",
-        "Implemented responsive designs for mobile-first applications",
-        "Participated in code reviews and agile development processes"
+        "Resolved technical tickets effectively, maintaining a high first-call resolution rate",
+        "Assisted in complex installations and promoted teamwork by supporting other technicians",
+        "Provided efficient troubleshooting for hardware and software issues, enhancing system reliability"
       ]
     }
   ];
 
   const skills = {
-    technical: ["JavaScript", "TypeScript", "React", "Next.js", "Node.js", "HTML/CSS", "Tailwind CSS", "GraphQL", "REST APIs", "Git"],
-    soft: ["Team Leadership", "Project Management", "Problem Solving", "Communication", "Time Management"]
+    technical: ["React", "TypeScript", "HTML", "CSS", "JavaScript", "WordPress", "Python", "Firebase", "Git/GitHub", "SQL"],
+    soft: ["Team Collaboration", "Problem Solving", "Communication", "Time Management", "Bilingual (English, Tagalog)"],
+    certifications: ["IT Network Pro (Specialized Network Management)"]
   };
 
   return (
@@ -88,7 +82,7 @@ const Resume = () => {
       
       <main className="container mx-auto px-4 py-20">
         <div className="max-w-5xl mx-auto">
-          <header className="text-center mb-16">
+          <header className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Professional <span className="heading-highlight">Resume</span>
             </h1>
@@ -97,7 +91,10 @@ const Resume = () => {
             </p>
             
             <div className="mt-8 flex justify-center">
-              <ButtonHover className="flex items-center gap-2">
+              <ButtonHover 
+                className="flex items-center gap-2"
+                onClick={() => window.open('/resume.pdf', '_blank')}
+              >
                 <FileText className="w-5 h-5" />
                 Download Resume PDF
               </ButtonHover>
@@ -289,6 +286,11 @@ const Resume = () => {
                 </CardContent>
               </Card>
             </div>
+          </div>
+
+          {/* Back Button */}
+          <div className="flex justify-center mt-16">
+            <BackButton />
           </div>
         </div>
       </main>

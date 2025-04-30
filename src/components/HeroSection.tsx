@@ -39,7 +39,7 @@ const HeroSection = () => {
   return (
     <section 
       id="home"
-      className="relative min-h-screen flex items-center justify-center grid-background overflow-hidden pt-20 pb-12"
+      className="relative min-h-screen flex items-center justify-center grid-background overflow-hidden pt-16 pb-24"
     >
       <div className="absolute inset-0 bg-gradient-to-b from-dark-300/40 to-dark-200/80 pointer-events-none"></div>
       
@@ -59,16 +59,16 @@ const HeroSection = () => {
       >
         <div className="max-w-4xl mx-auto text-center">
           <div 
-            className={`inline-block mb-6 py-1 px-3 border border-highlight/30 rounded-full text-sm text-highlight bg-dark-300/50 backdrop-blur-sm transform transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`}
+            className={`inline-block mb-4 py-1 px-3 border border-highlight/30 rounded-full text-sm text-highlight bg-dark-300/50 backdrop-blur-sm transform transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`}
           >
             <span className="animate-pulse">◉</span> Available for new projects
           </div>
           
-          <div className={`flex justify-center mb-6 transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`}>
+          <div className={`flex justify-center mb-4 transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`}>
             <ProfilePicture />
           </div>
           
-          <h1 className={`text-5xl md:text-7xl font-bold text-white mb-6 transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`} style={{ transitionDelay: '0.2s' }}>
+          <h1 className={`text-5xl md:text-7xl font-bold text-white mb-4 transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`} style={{ transitionDelay: '0.2s' }}>
             Karl <span className="text-highlight">Legson</span>
           </h1>
           
@@ -124,7 +124,7 @@ const HeroSection = () => {
         </div>
       </div>
       
-      <div className={`absolute bottom-10 left-1/2 transform -translate-x-1/2 transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`} style={{ transitionDelay: '1.2s', transform: `translateX(-50%) ${getTransform(3)}` }}>
+      <div className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`} style={{ transitionDelay: '1.2s', transform: `translateX(-50%) ${getTransform(3)}` }}>
         <a 
           href="#projects" 
           className="flex flex-col items-center text-neutral-400 hover:text-white transition-colors"
