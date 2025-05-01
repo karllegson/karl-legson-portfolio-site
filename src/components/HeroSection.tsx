@@ -1,39 +1,40 @@
 import { useState, useEffect } from 'react';
 import { ButtonHover } from './ui/button-hover';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from './ui/hover-card';
+import { cn } from '@/lib/utils';
 import ProfilePicture from './ProfilePicture';
 
 const HeroSection = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
-
+  const [typedText, setTypedText] = useState('');
+  const fullText = "Creating modern, minimalist web experiences with a focus on performance and user experience";
+  
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      // Calculate the mouse position as a percentage of the screen
-      const x = e.clientX / window.innerWidth;
-      const y = e.clientY / window.innerHeight;
-      setMousePosition({ x, y });
-    };
-
-    // Add subtle mouse tracking for interactive background
-    window.addEventListener('mousemove', handleMouseMove);
-    
-    // Show elements after a short delay
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 200);
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      clearTimeout(timer);
-    };
+    setIsVisible(true);
   }, []);
 
-  // Calculate subtle parallax effect based on mouse position
-  const getTransform = (factor: number) => {
-    const translateX = (mousePosition.x - 0.5) * factor;
-    const translateY = (mousePosition.y - 0.5) * factor;
-    return `translate(${translateX}px, ${translateY}px)`;
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let currentIndex = 0;
+    const typingDelay = 50; // Adjust typing speed here (milliseconds)
+
+    const typingInterval = setInterval(() => {
+      if (currentIndex <= fullText.length) {
+        setTypedText(fullText.slice(0, currentIndex));
+        currentIndex++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }, typingDelay);
+
+    return () => clearInterval(typingInterval);
+  }, [isVisible]);
+
+  const handleScrollClick = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    const section = document.getElementById('website-showcase');
+    section?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -41,38 +42,39 @@ const HeroSection = () => {
       id="home"
       className="relative min-h-screen flex items-center justify-center grid-background overflow-hidden pt-16 pb-24"
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-dark-300/40 to-dark-200/80 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-dark-300/40 pointer-events-none"></div>
       
-      <div 
-        className="absolute inset-0 opacity-30"
-        style={{ 
-          background: 'linear-gradient(135deg, rgba(20,20,20,0.95) 0%, rgba(40,40,40,0.9) 100%)',
-          backdropFilter: 'blur(8px)',
-          transform: getTransform(10),
-          transition: 'transform 0.2s ease-out'
-        }}
-      ></div>
-      
-      <div 
-        className="container px-4 mx-auto relative z-10"
-        style={{ transform: getTransform(-5), transition: 'transform 0.2s ease-out' }}
-      >
-        <div className="max-w-4xl mx-auto text-center">
-          <div 
-            className={`inline-block mb-4 py-1 px-3 border border-highlight/30 rounded-full text-sm text-highlight bg-dark-300/50 backdrop-blur-sm transform transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`}
-          >
+      <div className="container px-4 mx-auto relative z-10">
+        <div className="text-center">
+          <div className={cn(
+            "inline-block mb-4 py-1 px-3 border border-highlight/30 rounded-full text-sm text-highlight bg-dark-300/50",
+            isVisible ? "opacity-100" : "opacity-0 translate-y-5",
+            "transform transition-all duration-500"
+          )}>
             <span className="animate-pulse">◉</span> Available for new projects
           </div>
           
-          <div className={`flex justify-center mb-4 transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`}>
+          <div className={cn(
+            "flex justify-center mb-4",
+            isVisible ? "opacity-100" : "opacity-0 translate-y-5",
+            "transition-all duration-500"
+          )}>
             <ProfilePicture />
           </div>
           
-          <h1 className={`text-5xl md:text-7xl font-bold text-white mb-4 transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`} style={{ transitionDelay: '0.2s' }}>
+          <h1 className={cn(
+            "text-5xl md:text-7xl font-bold text-white mb-4",
+            isVisible ? "opacity-100" : "opacity-0 translate-y-5",
+            "transition-all duration-500"
+          )} style={{ transitionDelay: '0.2s' }}>
             Karl <span className="text-highlight">Legson</span>
           </h1>
           
-          <h2 className={`text-xl md:text-2xl text-neutral-400 mb-8 transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`} style={{ transitionDelay: '0.4s' }}>
+          <h2 className={cn(
+            "text-2xl md:text-3xl text-neutral-300 mb-6",
+            isVisible ? "opacity-100" : "opacity-0 translate-y-5",
+            "transition-all duration-500"
+          )} style={{ transitionDelay: '0.4s' }}>
             <HoverCard>
               <HoverCardTrigger className="cursor-default">
                 <span className="group">
@@ -91,14 +93,24 @@ const HeroSection = () => {
             </HoverCard>
           </h2>
           
-          <p className={`text-lg md:text-xl text-neutral-300 mb-10 leading-relaxed max-w-2xl mx-auto transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`} style={{ transitionDelay: '0.6s' }}>
-            Creating modern, minimalist web experiences with a focus on performance and user experience
+          <p className={cn(
+            "text-lg md:text-xl text-neutral-300 mb-10 leading-relaxed max-w-2xl mx-auto",
+            isVisible ? "opacity-100" : "opacity-0 translate-y-5",
+            "transition-all duration-500"
+          )} style={{ transitionDelay: '0.6s' }}>
+            {typedText}
+            <span className="inline-block w-0.5 h-5 bg-white ml-1 animate-blink"></span>
           </p>
           
-          <div className={`flex flex-col sm:flex-row items-center justify-center gap-4 transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`} style={{ transitionDelay: '0.8s' }}>
+          <div className={cn(
+            "flex flex-wrap justify-center gap-4",
+            isVisible ? "opacity-100" : "opacity-0 translate-y-5",
+            "transition-all duration-500"
+          )} style={{ transitionDelay: '0.8s' }}>
             <ButtonHover 
-              href="#projects"
+              href="#website-showcase"
               className="group relative overflow-hidden"
+              onClick={handleScrollClick}
             >
               View My Work
               <span className="absolute inset-0 bg-highlight/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full"></span>
@@ -124,9 +136,13 @@ const HeroSection = () => {
         </div>
       </div>
       
-      <div className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`} style={{ transitionDelay: '1.2s', transform: `translateX(-50%) ${getTransform(3)}` }}>
-        <a 
-          href="#projects" 
+      <div className={cn(
+        "absolute bottom-8 left-1/2 -translate-x-1/2",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5",
+        "transition-all duration-500"
+      )} style={{ transitionDelay: '1s' }}>
+        <button 
+          onClick={handleScrollClick}
           className="flex flex-col items-center text-neutral-400 hover:text-white transition-colors"
         >
           <span className="text-sm mb-2">Scroll Down</span>
@@ -142,7 +158,7 @@ const HeroSection = () => {
               clipRule="evenodd" 
             />
           </svg>
-        </a>
+        </button>
       </div>
     </section>
   );

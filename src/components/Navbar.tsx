@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ButtonHover } from './ui/button-hover';
@@ -7,16 +6,43 @@ import { cn } from '@/lib/utils';
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
+      // Update navbar background
       if (window.scrollY > 10) {
         setScrolled(true);
       } else {
         setScrolled(false);
       }
+
+      // Update active section based on scroll position
+      const sections = ['home', 'website-showcase', 'skills', 'hobbies', 'contact'];
+      const sectionElements = sections.map(id => document.getElementById(id));
+      
+      // Get the middle of the viewport
+      const viewportMiddle = window.scrollY + (window.innerHeight / 2);
+
+      // Find the section that's currently in view
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sectionElements[i];
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          const sectionTop = rect.top + window.scrollY;
+          const sectionBottom = sectionTop + rect.height;
+
+          if (viewportMiddle >= sectionTop && viewportMiddle <= sectionBottom) {
+            setActiveSection(sections[i]);
+            break;
+          }
+        }
+      }
     };
+
+    // Call once immediately to set initial state
+    handleScroll();
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -35,6 +61,7 @@ const Navbar = () => {
       const section = document.getElementById(sectionId);
       if (section) {
         section.scrollIntoView({ behavior: 'smooth' });
+        setActiveSection(sectionId);
       }
     } else {
       // Navigate to home page and then scroll to section
@@ -59,10 +86,10 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <NavLink href="#home" onClick={(e) => handleNavClick(e, "home")}>Home</NavLink>
-          <NavLink href="#projects" onClick={(e) => handleNavClick(e, "website-showcase")}>Projects</NavLink>
-          <NavLink href="#skills" onClick={(e) => handleNavClick(e, "skills")}>Skills</NavLink>
-          <NavLink href="#hobbies" onClick={(e) => handleNavClick(e, "hobbies")}>Hobbies</NavLink>
+          <NavLink href="#home" isActive={activeSection === 'home'} onClick={(e) => handleNavClick(e, "home")}>Home</NavLink>
+          <NavLink href="#website-showcase" isActive={activeSection === 'website-showcase'} onClick={(e) => handleNavClick(e, "website-showcase")}>Projects</NavLink>
+          <NavLink href="#skills" isActive={activeSection === 'skills'} onClick={(e) => handleNavClick(e, "skills")}>Skills</NavLink>
+          <NavLink href="#hobbies" isActive={activeSection === 'hobbies'} onClick={(e) => handleNavClick(e, "hobbies")}>Hobbies</NavLink>
           <Link 
             to="/resume" 
             className="text-sm font-medium text-[#FFDC00] hover:text-white transition-colors flex items-center gap-1"
@@ -101,10 +128,10 @@ const Navbar = () => {
         mobileMenuOpen ? "translate-x-0" : "translate-x-full"
       )}>
         <nav className="container px-4 mx-auto flex flex-col space-y-6 items-center">
-          <MobileNavLink href="#home" onClick={(e) => handleNavClick(e, "home")}>Home</MobileNavLink>
-          <MobileNavLink href="#projects" onClick={(e) => handleNavClick(e, "website-showcase")}>Projects</MobileNavLink>
-          <MobileNavLink href="#skills" onClick={(e) => handleNavClick(e, "skills")}>Skills</MobileNavLink>
-          <MobileNavLink href="#hobbies" onClick={(e) => handleNavClick(e, "hobbies")}>Hobbies</MobileNavLink>
+          <MobileNavLink href="#home" isActive={activeSection === 'home'} onClick={(e) => handleNavClick(e, "home")}>Home</MobileNavLink>
+          <MobileNavLink href="#website-showcase" isActive={activeSection === 'website-showcase'} onClick={(e) => handleNavClick(e, "website-showcase")}>Projects</MobileNavLink>
+          <MobileNavLink href="#skills" isActive={activeSection === 'skills'} onClick={(e) => handleNavClick(e, "skills")}>Skills</MobileNavLink>
+          <MobileNavLink href="#hobbies" isActive={activeSection === 'hobbies'} onClick={(e) => handleNavClick(e, "hobbies")}>Hobbies</MobileNavLink>
           <Link 
             to="/resume" 
             className="text-xl font-medium text-[#FFDC00] hover:text-white transition-colors flex items-center gap-2"
@@ -125,15 +152,20 @@ const Navbar = () => {
 const NavLink = ({ 
   href, 
   children,
+  isActive,
   onClick 
 }: { 
   href: string; 
   children: React.ReactNode;
+  isActive?: boolean;
   onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }) => (
   <a 
     href={href} 
-    className="text-sm font-medium text-neutral-300 hover:text-white transition-colors"
+    className={cn(
+      "text-sm font-medium transition-all duration-300",
+      isActive ? "text-white border-b-2 border-highlight" : "text-neutral-300 hover:text-white"
+    )}
     onClick={onClick}
   >
     {children}
@@ -143,15 +175,20 @@ const NavLink = ({
 const MobileNavLink = ({ 
   href, 
   children,
+  isActive,
   onClick 
 }: { 
   href: string; 
   children: React.ReactNode;
+  isActive?: boolean;
   onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }) => (
   <a 
     href={href} 
-    className="text-xl font-medium text-neutral-300 hover:text-white transition-colors"
+    className={cn(
+      "text-xl font-medium transition-all duration-300",
+      isActive ? "text-white border-b-2 border-highlight" : "text-neutral-300 hover:text-white"
+    )}
     onClick={onClick}
   >
     {children}
