@@ -1,5 +1,5 @@
-
 import type { Config } from "tailwindcss";
+import { fontFamily } from "tailwindcss/defaultTheme";
 
 export default {
 	darkMode: ["class"],
@@ -102,11 +102,15 @@ export default {
 				},
 				float: {
 					'0%, 100%': { transform: 'translateY(0)' },
-					'50%': { transform: 'translateY(-5px)' },
+					'50%': { transform: 'translateY(-10px)' },
 				},
 				pulse: {
 					'0%, 100%': { opacity: '1' },
 					'50%': { opacity: '0.5' },
+				},
+				'rotate-slow': {
+					'0%': { transform: 'rotate(0deg)' },
+					'100%': { transform: 'rotate(360deg)' },
 				},
 			},
 			animation: {
@@ -117,6 +121,7 @@ export default {
 				'slide-in-right': 'slideInRight 0.5s ease-out forwards',
 				'float': 'float 3s ease-in-out infinite',
 				'pulse': 'pulse 2s ease-in-out infinite',
+				'rotate-slow': 'rotate-slow 8s linear infinite',
 			},
 			backgroundImage: {
 				'grid-pattern': "url('/grid-pattern.svg')",

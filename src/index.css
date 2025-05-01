@@ -58,6 +58,28 @@
     background-position: top center;
   }
 
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) rotate(-45deg);
+    }
+    50% {
+      transform: translateY(-20px) rotate(-45deg);
+    }
+  }
+
+  @keyframes blink {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .animate-blink {
+    animation: blink 1s step-end infinite;
+  }
+
   .heading-highlight {
     @apply relative inline-block;
   }
