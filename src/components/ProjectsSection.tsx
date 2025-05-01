@@ -182,7 +182,7 @@ const ProjectsSection = () => {
                 
                 {/* Project Image */}
                 <div 
-                  className="relative aspect-[16/9] overflow-hidden rounded-lg cursor-pointer mb-3"
+                  className="relative aspect-[16/9] overflow-hidden rounded-lg cursor-pointer mb-2"
                   onClick={() => setSelectedImage(
                     viewStates[project.id] === 'planning' 
                       ? project.imageBefore 
@@ -196,7 +196,7 @@ const ProjectsSection = () => {
                   />
                 </div>
                 
-                <div className="flex flex-col gap-3 mt-6">
+                <div className="flex flex-col gap-3 mt-2">
                   <div 
                     className="relative cursor-pointer group/description"
                     onClick={() => toggleDescription(project.id)}
