@@ -10,6 +10,7 @@ type Project = {
   description: string | JSX.Element;
   imageBefore: string;
   imageAfter: string;
+  additionalImages?: string[];
   url: string;
   githubUrl?: string;
   date: string;
@@ -23,6 +24,11 @@ const projects: Project[] = [
     description: "A web application designed to streamline the process of matching volunteers with service opportunities. The platform allows organizations to post volunteer events and users to browse, filter, and sign up based on their interests, skills, and availability.",
     imageBefore: "/images/VolunteerConnectPlanning.png",
     imageAfter: "/images/VolunteerConnect.png",
+    additionalImages: [
+      "/images/VolunteerConnect1.png",
+      "/images/VolunteerConnect2.png",
+      "/images/VolunteerConnect3.png"
+    ],
     url: "",
     githubUrl: "https://github.com/joavelar/VolunteerConnect",
     date: "February 2025",
@@ -34,6 +40,11 @@ const projects: Project[] = [
     description: "Contributed to the frontend development of a web application that aggregates internship listings from sources like LinkedIn. Implemented user-facing features such as filtering, saving jobs, and marking applications as submitted.",
     imageBefore: "/images/CareerHarvestPlanning.png",
     imageAfter: "/images/CareerHarvest.png",
+    additionalImages: [
+      "/images/CareerHarvest1.png",
+      "/images/CareerHarvest2.png",
+      "/images/CareerHarvest3.png"
+    ],
     url: "https://careerharvest.org",
     githubUrl: "https://github.com/BizzNEST/career-harvest",
     date: "March 2024",
@@ -45,6 +56,11 @@ const projects: Project[] = [
     description: "NESTwork is a randomized scheduling app built with HTML, CSS, and JavaScript. The application pairs or groups interns from various locations and departments based on customizable rules.",
     imageBefore: "/images/BizzNESTPlanning.png",
     imageAfter: "/images/Bizznest-scheduler.png",
+    additionalImages: [
+      "/images/BizzNest1.png",
+      "/images/BizzNest2.png",
+      "/images/BizzNest3.png"
+    ],
     url: "https://bizznest.github.io/modesto-bizznest-scheduler/",
     githubUrl: "https://github.com/BizzNEST/modesto-bizznest-scheduler",
     date: "December 2024",
@@ -52,10 +68,15 @@ const projects: Project[] = [
   },
   {
     id: 4,
-    title: "Landing Pages for a Home Services Company",
+    title: "Landing Pages for a Home Service Companies",
     description: <>I code landing pages, subpages, and blog posts for <span className="text-emerald-400 font-bold">28+</span> home service companies. My focus is on clean, semantic HTML that supports search engine visibility, fast load times, and responsive performance. These pages are built to align with each company's marketing goals and SEO strategy, ensuring the content is structured effectively for both users and crawlers.</>,
     imageBefore: "/images/HomeServiceCompanyPlanning.png",
     imageAfter: "/images/HomeServiceCompany.png",
+    additionalImages: [
+      "/images/HomeServiceCompany1.png",
+      "/images/HomeServiceCompany2.png",
+      "/images/HomeServiceCompany3.png"
+    ],
     url: "",
     date: "January 2025",
     status: "Completed"
@@ -253,6 +274,9 @@ const ProjectsSection = () => {
         isOpen={!!selectedImage}
         onClose={() => setSelectedImage(null)}
         imageUrl={selectedImage || ''}
+        additionalImages={
+          selectedImage && projects.find(p => p.imageAfter === selectedImage)?.additionalImages || []
+        }
         altText="Project preview"
       />
     </section>
