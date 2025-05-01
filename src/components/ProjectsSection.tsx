@@ -7,7 +7,7 @@ import ImageModal from './ImageModal';
 type Project = {
   id: number;
   title: string;
-  description: string;
+  description: string | JSX.Element;
   imageBefore: string;
   imageAfter: string;
   url: string;
@@ -49,7 +49,7 @@ const projects: Project[] = [
   {
     id: 4,
     title: "Landing Pages for a Home Services Company",
-    description: "I code landing pages, subpages, and blog posts for various home service companies, using content provided by SEO and content teams. My focus is on clean, semantic HTML that supports search engine visibility, fast load times, and responsive performance. These pages are built to align with each company's marketing goals and SEO strategy, ensuring the content is structured effectively for both users and crawlers.",
+    description: <>I code landing pages, subpages, and blog posts for <span className="text-emerald-400 font-bold">28+</span> home service companies. My focus is on clean, semantic HTML that supports search engine visibility, fast load times, and responsive performance. These pages are built to align with each company's marketing goals and SEO strategy, ensuring the content is structured effectively for both users and crawlers.</>,
     imageBefore: "/images/HomeServiceCompanyPlanning.png",
     imageAfter: "/images/HomeServiceCompany.png",
     url: "",
