@@ -1,7 +1,7 @@
 import { useScrollToSection } from '@/hooks/useScrollToSection';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
-import WebsiteShowcase from '@/components/WebsiteShowcase';
+import ProjectsSection from '@/components/ProjectsSection';
 import SkillsSection from '@/components/SkillsSection';
 import HobbiesSection from '@/components/HobbiesSection';
 import ContactSection from '@/components/ContactSection';
@@ -17,7 +17,7 @@ const Index = () => {
       <Navbar />
       <main>
         <HeroSection />
-        <WebsiteShowcase />
+        <ProjectsSection />
         <SkillsSection />
         <HobbiesSection />
         <ContactSection />
