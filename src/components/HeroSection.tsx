@@ -3,10 +3,12 @@ import { ButtonHover } from './ui/button-hover';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from './ui/hover-card';
 import { cn } from '@/lib/utils';
 import ProfilePicture from './ProfilePicture';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [typedText, setTypedText] = useState('');
+  const navigate = useNavigate();
   const fullText = "Creating modern, minimalist web experiences with a focus on performance and user experience";
   
   useEffect(() => {
@@ -33,7 +35,7 @@ const HeroSection = () => {
 
   const handleScrollClick = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    const section = document.getElementById('website-showcase');
+    const section = document.getElementById('projects');
     section?.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -108,7 +110,7 @@ const HeroSection = () => {
             "transition-all duration-500"
           )} style={{ transitionDelay: '0.8s' }}>
             <ButtonHover 
-              href="#website-showcase"
+              href="#projects"
               className="group relative overflow-hidden"
               onClick={handleScrollClick}
             >
@@ -120,6 +122,10 @@ const HeroSection = () => {
               as="link"
               to="/resume"
               className="border-highlight/30 hover:border-highlight/60 group"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/resume');
+              }}
             >
               View My Resume
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-highlight/50 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>

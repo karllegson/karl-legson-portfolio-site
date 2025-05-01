@@ -19,7 +19,7 @@ const Navbar = () => {
       }
 
       // Update active section based on scroll position
-      const sections = ['home', 'website-showcase', 'skills', 'hobbies', 'contact'];
+      const sections = ['home', 'projects', 'skills', 'hobbies', 'contact'];
       const sectionElements = sections.map(id => document.getElementById(id));
       
       // Get the middle of the viewport
@@ -62,15 +62,14 @@ const Navbar = () => {
       if (section) {
         section.scrollIntoView({ behavior: 'smooth' });
         setActiveSection(sectionId);
+        // Close mobile menu if open
+        if (mobileMenuOpen) {
+          setMobileMenuOpen(false);
+        }
       }
     } else {
       // Navigate to home page and then scroll to section
       navigate('/', { state: { scrollTo: sectionId } });
-    }
-    
-    // Close mobile menu if open
-    if (mobileMenuOpen) {
-      setMobileMenuOpen(false);
     }
   };
 
@@ -87,7 +86,7 @@ const Navbar = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
           <NavLink href="#home" isActive={activeSection === 'home'} onClick={(e) => handleNavClick(e, "home")}>Home</NavLink>
-          <NavLink href="#website-showcase" isActive={activeSection === 'website-showcase'} onClick={(e) => handleNavClick(e, "website-showcase")}>Projects</NavLink>
+          <NavLink href="#projects" isActive={activeSection === 'projects'} onClick={(e) => handleNavClick(e, "projects")}>Projects</NavLink>
           <NavLink href="#skills" isActive={activeSection === 'skills'} onClick={(e) => handleNavClick(e, "skills")}>Skills</NavLink>
           <NavLink href="#hobbies" isActive={activeSection === 'hobbies'} onClick={(e) => handleNavClick(e, "hobbies")}>Hobbies</NavLink>
           <Link 
@@ -152,7 +151,7 @@ const Navbar = () => {
         <nav className="container h-full px-8 mx-auto flex flex-col items-center justify-center -mt-20">
           <div className="space-y-8 text-center">
             <MobileNavLink href="#home" isActive={activeSection === 'home'} onClick={(e) => handleNavClick(e, "home")}>Home</MobileNavLink>
-            <MobileNavLink href="#website-showcase" isActive={activeSection === 'website-showcase'} onClick={(e) => handleNavClick(e, "website-showcase")}>Projects</MobileNavLink>
+            <MobileNavLink href="#projects" isActive={activeSection === 'projects'} onClick={(e) => handleNavClick(e, "projects")}>Projects</MobileNavLink>
             <MobileNavLink href="#skills" isActive={activeSection === 'skills'} onClick={(e) => handleNavClick(e, "skills")}>Skills</MobileNavLink>
             <MobileNavLink href="#hobbies" isActive={activeSection === 'hobbies'} onClick={(e) => handleNavClick(e, "hobbies")}>Hobbies</MobileNavLink>
             <Link 
