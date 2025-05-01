@@ -1,6 +1,5 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogClose } from '@/components/ui/dialog';
-import { X } from 'lucide-react';
 
 interface ImageModalProps {
   isOpen: boolean;
@@ -17,7 +16,8 @@ const ImageModal = ({ isOpen, onClose, imageUrl, altText }: ImageModalProps) => 
           <button
             className="absolute -right-4 -top-4 z-50 flex h-8 w-8 items-center justify-center rounded-full bg-dark-200 border border-neutral-700 shadow-lg transition-all hover:scale-110 hover:bg-dark-100"
           >
-            <X className="h-4 w-4 text-neutral-300" />
+            <span className="block w-4 h-0.5 bg-neutral-300 rotate-45 absolute"></span>
+            <span className="block w-4 h-0.5 bg-neutral-300 -rotate-45 absolute"></span>
             <span className="sr-only">Close</span>
           </button>
         </DialogClose>

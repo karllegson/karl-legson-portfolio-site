@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { ButtonHover } from './ui/button-hover';
-import { ExternalLink, Construction, ChevronDown, ChevronUp } from 'lucide-react';
+import { ExternalLink, Construction, ChevronDown, ChevronUp, X } from 'lucide-react';
 import ImageModal from './ImageModal';
 
 type Project = {
@@ -20,7 +20,7 @@ const projects: Project[] = [
     id: 1,
     title: "Volunteer Connect",
     description: "A web application designed to streamline the process of matching volunteers with service opportunities. The platform allows organizations to post volunteer events and users to browse, filter, and sign up based on their interests, skills, and availability.",
-    imageBefore: "/images/VolunteerConnect-before.png",
+    imageBefore: "/images/VolunteerConnectPlanning.png",
     imageAfter: "/images/VolunteerConnect.png",
     url: "#",
     date: "February 2025",
@@ -30,9 +30,9 @@ const projects: Project[] = [
     id: 2,
     title: "Career Harvest",
     description: "Contributed to the frontend development of a web application that aggregates internship listings from sources like LinkedIn. Implemented user-facing features such as filtering, saving jobs, and marking applications as submitted.",
-    imageBefore: "/images/CareerHarvest-before.png",
+    imageBefore: "/images/CareerHarvestPlanning.png",
     imageAfter: "/images/CareerHarvest.png",
-    url: "#",
+    url: "https://careerharvest.org",
     date: "March 2024",
     status: "In Development"
   },
@@ -40,10 +40,10 @@ const projects: Project[] = [
     id: 3,
     title: "BizzNest Scheduler",
     description: "NESTwork is a randomized scheduling app built with HTML, CSS, and JavaScript. The application pairs or groups interns from various locations and departments based on customizable rules.",
-    imageBefore: "/images/Bizznest-scheduler-before.png",
+    imageBefore: "/images/BizzNESTPlanning.png",
     imageAfter: "/images/Bizznest-scheduler.png",
-    url: "#",
-    date: "January 2024",
+    url: "https://bizznest.github.io/modesto-bizznest-scheduler/",
+    date: "December 2024",
     status: "Completed"
   }
 ];
@@ -186,16 +186,34 @@ const ProjectsSection = () => {
                   </div>
                   
                   <div className="flex items-center gap-3 shrink-0">
-                    <span className="text-xs text-[#FFDC00]">
+                    <span className="text-xs text-white">
                       {project.date}
                     </span>
                     <ButtonHover 
                       href={project.url}
                       target="_blank"
-                      className="bg-[#FFDC00]/10 border-[#FFDC00]/30 hover:bg-[#FFDC00]/20 py-1 px-2"
+                      className={cn(
+                        "py-1 px-2",
+                        project.title === "Volunteer Connect"
+                          ? "bg-neutral-800/50 border-neutral-700 cursor-not-allowed"
+                          : "bg-[#FFDC00]/10 border-[#FFDC00]/30 hover:bg-[#FFDC00]/20"
+                      )}
+                      onClick={(e) => {
+                        if (project.title === "Volunteer Connect") {
+                          e.preventDefault();
+                        }
+                      }}
                     >
-                      <span className="text-[#FFDC00] text-xs whitespace-nowrap">Visit Website</span>
-                      <ExternalLink className="w-3 h-3 text-[#FFDC00]" />
+                      <span className={cn(
+                        "text-xs whitespace-nowrap",
+                        project.title === "Volunteer Connect" ? "text-neutral-400" : "text-[#FFDC00]"
+                      )}>
+                        Visit Website
+                      </span>
+                      <ExternalLink className={cn(
+                        "w-3 h-3",
+                        project.title === "Volunteer Connect" ? "text-neutral-400" : "text-[#FFDC00]"
+                      )} />
                     </ButtonHover>
                   </div>
                 </div>
