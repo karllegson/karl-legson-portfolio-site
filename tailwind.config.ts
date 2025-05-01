@@ -101,6 +101,10 @@ export default {
 					'0%': { transform: 'translateX(20px)', opacity: '0' },
 					'100%': { transform: 'translateX(0)', opacity: '1' },
 				},
+				slideRight: {
+					'0%': { transform: 'translateX(-100%)' },
+					'100%': { transform: 'translateX(0)' },
+				},
 				float: {
 					'0%, 100%': { transform: 'translateY(0)' },
 					'50%': { transform: 'translateY(-10px)' },
@@ -120,6 +124,7 @@ export default {
 				'fade-in': 'fadeIn 0.5s ease-out forwards',
 				'slide-in-left': 'slideInLeft 0.5s ease-out forwards',
 				'slide-in-right': 'slideInRight 0.5s ease-out forwards',
+				'slide-right': 'slideRight 0.8s ease-out forwards',
 				'float': 'float 3s ease-in-out infinite',
 				'pulse': 'pulse 2s ease-in-out infinite',
 				'rotate-slow': 'rotate-slow 8s linear infinite',

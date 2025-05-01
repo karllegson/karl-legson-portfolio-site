@@ -1,34 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ButtonHover } from './ui/button-hover';
 import { cn } from '@/lib/utils';
+import emailjs from '@emailjs/browser';
 
 const ContactSection = () => {
+  const form = useRef<HTMLFormElement>(null);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
+    user_name: '',
+    user_email: '',
     message: ''
   });
   
   const [formStatus, setFormStatus] = useState<null | 'success' | 'error'>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    // Initialize EmailJS
+    emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+    
+    // Debug: Check if environment variables are loaded
+    console.log('Environment variables:', {
+      serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+    });
+  }, []);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // This would normally connect to a backend or email API
-    console.log('Form submitted:', formData);
-    
-    // Simulate success for demo purposes
-    setFormStatus('success');
-    
-    // Reset form after submission
-    setTimeout(() => {
-      setFormData({ name: '', email: '', message: '' });
-      setFormStatus(null);
-    }, 3000);
+    if (!form.current) return;
+
+    setIsSubmitting(true);
+    setFormStatus(null);
+
+    try {
+      const result = await emailjs.sendForm(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        form.current,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+      
+      if (result.text === 'OK') {
+        console.log('Email sent successfully');
+        setFormStatus('success');
+        setFormData({ user_name: '', user_email: '', message: '' });
+      } else {
+        throw new Error('Failed to send email');
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setFormStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -133,17 +163,17 @@ const ContactSection = () => {
           </div>
           
           <div className="opacity-0 animate-slide-in-right">
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form ref={form} onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 gap-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-neutral-300 mb-2">
+                  <label htmlFor="user_name" className="block text-sm font-medium text-neutral-300 mb-2">
                     Your Name
                   </label>
                   <input
                     type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
+                    id="user_name"
+                    name="user_name"
+                    value={formData.user_name}
                     onChange={handleChange}
                     className="w-full bg-dark-100 border border-neutral-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-highlight/50 focus:border-transparent transition-all"
                     required
@@ -151,14 +181,14 @@ const ContactSection = () => {
                 </div>
                 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-neutral-300 mb-2">
+                  <label htmlFor="user_email" className="block text-sm font-medium text-neutral-300 mb-2">
                     Your Email
                   </label>
                   <input
                     type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
+                    id="user_email"
+                    name="user_email"
+                    value={formData.user_email}
                     onChange={handleChange}
                     className="w-full bg-dark-100 border border-neutral-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-highlight/50 focus:border-transparent transition-all"
                     required
@@ -182,9 +212,13 @@ const ContactSection = () => {
               </div>
               
               <ButtonHover 
-                className="w-full justify-center bg-highlight hover:bg-highlight/90 text-white"
+                className={cn(
+                  "w-full justify-center bg-highlight hover:bg-highlight/90 text-white",
+                  isSubmitting && "opacity-50 cursor-not-allowed"
+                )}
+                disabled={isSubmitting}
               >
-                Send Message
+                {isSubmitting ? "Sending..." : "Send Message"}
               </ButtonHover>
               
               {formStatus && (
@@ -195,7 +229,7 @@ const ContactSection = () => {
                   )}
                 >
                   {formStatus === 'success' 
-                    ? "Your message has been sent successfully!" 
+                    ? "Thank you! Your message has been sent successfully!" 
                     : "There was an error sending your message. Please try again."}
                 </div>
               )}

@@ -92,7 +92,7 @@ const ProjectsSection = () => {
         <div className="max-w-7xl mx-auto">
           <div className="mb-10 text-center">
             <p className="text-[#FFDC00] text-xs font-medium mb-2 tracking-wider">
-              REAL CLIENTS WITH REAL SOLUTIONS
+              COLLABORATIVE PROJECTS WITH REAL IMPACT
             </p>
             <h2 className="text-2xl md:text-4xl font-bold text-white">
               See our latest projects

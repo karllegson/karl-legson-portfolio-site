@@ -1,4 +1,3 @@
-
 import { cn } from "@/lib/utils";
 
 type Skill = {
@@ -8,18 +7,28 @@ type Skill = {
 };
 
 const skills: Skill[] = [
-  { name: "HTML & CSS", progress: 95, category: 'frontend' },
-  { name: "JavaScript", progress: 90, category: 'frontend' },
+  // Frontend Development
+  { name: "HTML & CSS", progress: 92, category: 'frontend' },
+  { name: "JavaScript", progress: 88, category: 'frontend' },
   { name: "React", progress: 85, category: 'frontend' },
+  { name: "Next.js", progress: 78, category: 'frontend' },
+  { name: "TypeScript", progress: 75, category: 'frontend' },
   { name: "Tailwind CSS", progress: 90, category: 'frontend' },
-  { name: "TypeScript", progress: 80, category: 'frontend' },
+  
+  // Backend Development
   { name: "Node.js", progress: 75, category: 'backend' },
-  { name: "Express", progress: 80, category: 'backend' },
-  { name: "MongoDB", progress: 70, category: 'backend' },
-  { name: "PostgreSQL", progress: 65, category: 'backend' },
-  { name: "Git", progress: 85, category: 'tools' },
-  { name: "Figma", progress: 80, category: 'tools' },
-  { name: "Docker", progress: 60, category: 'tools' },
+  { name: "REST APIs", progress: 80, category: 'backend' },
+  { name: "Python", progress: 78, category: 'backend' },
+  { name: "MySQL", progress: 72, category: 'backend' },
+  { name: "Firebase", progress: 76, category: 'backend' },
+  { name: "Database Management", progress: 75, category: 'backend' },
+  
+  // Tools & Technologies
+  { name: "Git/GitHub", progress: 88, category: 'tools' },
+  { name: "CI/CD", progress: 70, category: 'tools' },
+  { name: "Debugging", progress: 85, category: 'tools' },
+  { name: "Problem Solving", progress: 86, category: 'tools' },
+  { name: "SEO Optimization", progress: 82, category: 'tools' },
 ];
 
 const SkillsSection = () => {
@@ -93,12 +102,15 @@ const SkillBar = ({
     <div className="h-2 bg-dark-100 rounded-full overflow-hidden">
       <div 
         className={cn(
-          "h-full rounded-full transition-all duration-1000",
-          skill.progress >= 90 ? "bg-highlight" : 
-          skill.progress >= 75 ? "bg-gradient-to-r from-highlight to-orange-500" : 
-          "bg-gradient-to-r from-neutral-500 to-neutral-400"
+          "h-full rounded-full animate-slide-right",
+          skill.progress >= 90 ? "bg-gradient-to-r from-neutral-400/70 to-neutral-500/70" : 
+          skill.progress >= 80 ? "bg-gradient-to-r from-neutral-400/60 to-neutral-500/60" : 
+          "bg-gradient-to-r from-neutral-400/50 to-neutral-500/50"
         )}
-        style={{ width: `${skill.progress}%`, transform: 'translateX(-100%)', animationDelay: `${delay + 0.3}s` }}
+        style={{ 
+          width: `${skill.progress}%`,
+          animationDelay: `${delay + 0.5}s`
+        }}
       ></div>
     </div>
   </div>

@@ -1,4 +1,3 @@
-
 type Hobby = {
   title: string;
   description: string;
@@ -7,24 +6,24 @@ type Hobby = {
 
 const hobbies: Hobby[] = [
   {
-    title: "Photography",
-    description: "Capturing moments and exploring visual storytelling through street and landscape photography.",
-    icon: "📷",
+    title: "Music",
+    description: "Passionate about music and its ability to inspire and energize. Always exploring new genres and artists.",
+    icon: "🎵",
   },
   {
-    title: "Hiking",
-    description: "Exploring nature trails and mountains while disconnecting from technology and finding inspiration.",
-    icon: "🏔️",
+    title: "Billiards",
+    description: "Enjoy playing pool, mastering precision shots, and the strategic aspects of the game.",
+    icon: "🎱",
   },
   {
-    title: "Reading",
-    description: "Diving into books about technology, design, science fiction, and personal development.",
-    icon: "📚",
+    title: "Aviation",
+    description: "Flying airplanes and experiencing the freedom of the skies. Passionate about aviation and aerial adventures.",
+    icon: "✈️",
   },
   {
-    title: "Coffee Brewing",
-    description: "Perfecting the art of brewing different coffee methods and exploring unique beans from around the world.",
-    icon: "☕",
+    title: "Motorcycles",
+    description: "Love the thrill and freedom of riding motorcycles. Exploring new routes and experiencing the open road.",
+    icon: "🏍️",
   },
 ];
 
