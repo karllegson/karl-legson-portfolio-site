@@ -8,15 +8,14 @@ const ProfilePicture = () => {
   const profileImage = "/images/profile-photo.png";
   
   return (
-    <div className="relative">
-      <div className="absolute -inset-0.5 bg-gradient-to-br from-[#FFDC00] to-[#FFDC00]/50 rounded-full blur-sm opacity-70 animate-pulse"></div>
-      <Avatar className={`w-48 h-48 md:w-52 md:h-52 ring-2 ring-[#FFDC00]/20 transition-all duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+    <div className="relative flex items-center justify-center">
+      <Avatar className={`w-48 h-48 md:w-52 md:h-52 transition-all duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
         <AvatarImage 
           src={profileImage} 
           className="object-cover scale-125 object-[center_40%]"
           onLoad={() => setIsLoaded(true)}
         />
-        <AvatarFallback className="bg-dark-300 text-[#FFDC00] text-2xl">KL</AvatarFallback>
+        <AvatarFallback className="bg-dark-300 text-neutral-400 text-2xl">KL</AvatarFallback>
       </Avatar>
       
       {/* Interactive elements */}

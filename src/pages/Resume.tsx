@@ -9,6 +9,7 @@ import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 import BackgroundAnimation from '@/components/BackgroundAnimation';
 import { ArrowDown, Briefcase, BookOpen, FileText } from 'lucide-react';
+import ContactSection from '@/components/ContactSection';
 
 const Resume = () => {
   const [activeSection, setActiveSection] = useState<'education' | 'experience'>('education');
@@ -295,6 +296,7 @@ const Resume = () => {
         </div>
       </main>
       
+      <ContactSection />
       <Footer />
     </div>
   );
