@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -12,6 +12,11 @@ import { ArrowDown, Briefcase, BookOpen, FileText } from 'lucide-react';
 
 const Resume = () => {
   const [activeSection, setActiveSection] = useState<'education' | 'experience'>('education');
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const education = [
     {
