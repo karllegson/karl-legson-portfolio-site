@@ -22,7 +22,7 @@ const projects: Project[] = [
     description: "A web application designed to streamline the process of matching volunteers with service opportunities. The platform allows organizations to post volunteer events and users to browse, filter, and sign up based on their interests, skills, and availability.",
     imageBefore: "/images/VolunteerConnectPlanning.png",
     imageAfter: "/images/VolunteerConnect.png",
-    url: "#",
+    url: "",
     date: "February 2025",
     status: "In Development"
   },
@@ -44,6 +44,16 @@ const projects: Project[] = [
     imageAfter: "/images/Bizznest-scheduler.png",
     url: "https://bizznest.github.io/modesto-bizznest-scheduler/",
     date: "December 2024",
+    status: "Completed"
+  },
+  {
+    id: 4,
+    title: "Landing Pages for a Home Services Company",
+    description: "I code landing pages, subpages, and blog posts for various home service companies, using content provided by SEO and content teams. My focus is on clean, semantic HTML that supports search engine visibility, fast load times, and responsive performance. These pages are built to align with each company's marketing goals and SEO strategy, ensuring the content is structured effectively for both users and crawlers.",
+    imageBefore: "/images/HomeServiceCompanyPlanning.png",
+    imageAfter: "/images/HomeServiceCompany.png",
+    url: "",
+    date: "January 2025",
     status: "Completed"
   }
 ];
