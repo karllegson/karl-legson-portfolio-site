@@ -77,7 +77,7 @@ const Navbar = () => {
   return (
     <header className={cn(
       "fixed top-0 left-0 w-full z-50 transition-all duration-300",
-      scrolled ? "bg-dark-300/80 backdrop-blur-md py-3" : "bg-transparent py-5"
+      scrolled || mobileMenuOpen ? "bg-[#1A1B1E] py-3" : "bg-transparent py-5"
     )}>
       <div className="container px-4 mx-auto flex justify-between items-center">
         <Link to="/" className="text-xl font-medium text-white hover:text-highlight transition-colors">
@@ -124,25 +124,55 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <div className={cn(
-        "md:hidden fixed inset-0 bg-dark-300/95 z-40 transition-transform duration-300 pt-20",
+        "md:hidden fixed inset-0 bg-[#1A1B1E] z-40 transition-all duration-300",
         mobileMenuOpen ? "translate-x-0" : "translate-x-full"
       )}>
-        <nav className="container px-4 mx-auto flex flex-col space-y-6 items-center">
-          <MobileNavLink href="#home" isActive={activeSection === 'home'} onClick={(e) => handleNavClick(e, "home")}>Home</MobileNavLink>
-          <MobileNavLink href="#website-showcase" isActive={activeSection === 'website-showcase'} onClick={(e) => handleNavClick(e, "website-showcase")}>Projects</MobileNavLink>
-          <MobileNavLink href="#skills" isActive={activeSection === 'skills'} onClick={(e) => handleNavClick(e, "skills")}>Skills</MobileNavLink>
-          <MobileNavLink href="#hobbies" isActive={activeSection === 'hobbies'} onClick={(e) => handleNavClick(e, "hobbies")}>Hobbies</MobileNavLink>
-          <Link 
-            to="/resume" 
-            className="text-xl font-medium text-[#FFDC00] hover:text-white transition-colors flex items-center gap-2"
-            onClick={toggleMobileMenu}
+        {/* Close Button */}
+        <button 
+          className="absolute top-8 right-6 text-neutral-400 hover:text-white transition-colors"
+          onClick={toggleMobileMenu}
+          aria-label="Close menu"
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            className="h-5 w-5" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+            strokeWidth={1.5}
           >
-            <span>Resume</span>
-            <span className="w-2 h-2 rounded-full bg-[#FFDC00] animate-pulse"></span>
-          </Link>
-          <ButtonHover href="#contact" className="w-full justify-center" onClick={(e) => handleNavClick(e, "contact")}>
-            Contact Me
-          </ButtonHover>
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+
+        <nav className="container h-full px-8 mx-auto flex flex-col items-center justify-center -mt-20">
+          <div className="space-y-8 text-center">
+            <MobileNavLink href="#home" isActive={activeSection === 'home'} onClick={(e) => handleNavClick(e, "home")}>Home</MobileNavLink>
+            <MobileNavLink href="#website-showcase" isActive={activeSection === 'website-showcase'} onClick={(e) => handleNavClick(e, "website-showcase")}>Projects</MobileNavLink>
+            <MobileNavLink href="#skills" isActive={activeSection === 'skills'} onClick={(e) => handleNavClick(e, "skills")}>Skills</MobileNavLink>
+            <MobileNavLink href="#hobbies" isActive={activeSection === 'hobbies'} onClick={(e) => handleNavClick(e, "hobbies")}>Hobbies</MobileNavLink>
+            <Link 
+              to="/resume" 
+              className="block text-lg font-medium text-[#FFDC00] hover:text-white transition-colors"
+              onClick={toggleMobileMenu}
+            >
+              <div className="flex items-center justify-center gap-2">
+                <span>Resume</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FFDC00] animate-pulse"></span>
+              </div>
+            </Link>
+            <ButtonHover 
+              href="#contact" 
+              className="w-full justify-center mt-8" 
+              onClick={(e) => handleNavClick(e, "contact")}
+            >
+              Contact Me
+            </ButtonHover>
+          </div>
         </nav>
       </div>
     </header>
@@ -186,8 +216,10 @@ const MobileNavLink = ({
   <a 
     href={href} 
     className={cn(
-      "text-xl font-medium transition-all duration-300",
-      isActive ? "text-white border-b-2 border-highlight" : "text-neutral-300 hover:text-white"
+      "block text-lg font-medium transition-all duration-300",
+      isActive 
+        ? "text-white" 
+        : "text-neutral-400 hover:text-white"
     )}
     onClick={onClick}
   >

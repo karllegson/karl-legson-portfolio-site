@@ -116,7 +116,6 @@ const ProjectsSection = () => {
                     {project.status === "In Development" && (
                       <div className="flex items-center gap-1 bg-[#FFDC00]/10 px-2 py-0.5 rounded-full">
                         <Construction className="w-3 h-3 text-[#FFDC00]" />
-                        <span className="text-[#FFDC00] text-xs">In Development</span>
                       </div>
                     )}
                   </div>
