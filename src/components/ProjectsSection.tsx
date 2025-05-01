@@ -192,7 +192,7 @@ const ProjectsSection = () => {
                   <img 
                     src={viewStates[project.id] === 'planning' ? project.imageBefore : project.imageAfter}
                     alt={project.title}
-                    className="w-full h-full object-cover object-center transition-all duration-700"
+                    className="w-full h-full object-contain bg-dark-100 transition-all duration-700"
                   />
                 </div>
                 
