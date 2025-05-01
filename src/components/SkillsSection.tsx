@@ -8,18 +8,18 @@ type Skill = {
 
 const skills: Skill[] = [
   // Frontend Development
-  { name: "HTML & CSS", progress: 92, category: 'frontend' },
+  { name: "HTML & CSS", progress: 98, category: 'frontend' },
   { name: "JavaScript", progress: 88, category: 'frontend' },
   { name: "React", progress: 85, category: 'frontend' },
-  { name: "Next.js", progress: 78, category: 'frontend' },
+  { name: "Next.js", progress: 60, category: 'frontend' },
   { name: "TypeScript", progress: 75, category: 'frontend' },
-  { name: "Tailwind CSS", progress: 90, category: 'frontend' },
+  { name: "Tailwind CSS", progress: 64, category: 'frontend' },
   
   // Backend Development
-  { name: "Node.js", progress: 75, category: 'backend' },
-  { name: "REST APIs", progress: 80, category: 'backend' },
+  { name: "Node.js", progress: 60, category: 'backend' },
+  { name: "REST APIs", progress: 75, category: 'backend' },
   { name: "Python", progress: 78, category: 'backend' },
-  { name: "MySQL", progress: 72, category: 'backend' },
+  { name: "MySQL", progress: 62, category: 'backend' },
   { name: "Firebase", progress: 76, category: 'backend' },
   { name: "Database Management", progress: 75, category: 'backend' },
   
@@ -27,8 +27,9 @@ const skills: Skill[] = [
   { name: "Git/GitHub", progress: 88, category: 'tools' },
   { name: "CI/CD", progress: 70, category: 'tools' },
   { name: "Debugging", progress: 85, category: 'tools' },
-  { name: "Problem Solving", progress: 86, category: 'tools' },
-  { name: "SEO Optimization", progress: 82, category: 'tools' },
+  { name: "Problem Solving", progress: 99, category: 'tools' },
+  { name: "SEO Optimization", progress: 89, category: 'tools' },
+  { name: "Saying No to New Side Projects", progress: 4, category: 'tools' },
 ];
 
 const SkillsSection = () => {
@@ -103,8 +104,14 @@ const SkillBar = ({
       <div 
         className={cn(
           "h-full rounded-full animate-slide-right",
-          skill.progress >= 90 ? "bg-gradient-to-r from-neutral-400/70 to-neutral-500/70" : 
-          skill.progress >= 80 ? "bg-gradient-to-r from-neutral-400/60 to-neutral-500/60" : 
+          skill.name === "Problem Solving" 
+            ? "bg-gradient-to-r from-emerald-400/70 to-green-500/70" :
+          skill.name === "Saying No to New Side Projects"
+            ? "bg-gradient-to-r from-red-400/70 to-orange-500/70" :
+          skill.progress >= 90 
+            ? "bg-gradient-to-r from-neutral-400/70 to-neutral-500/70" : 
+          skill.progress >= 80 
+            ? "bg-gradient-to-r from-neutral-400/60 to-neutral-500/60" : 
           "bg-gradient-to-r from-neutral-400/50 to-neutral-500/50"
         )}
         style={{ 
