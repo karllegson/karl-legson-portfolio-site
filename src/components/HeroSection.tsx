@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ButtonHover } from './ui/button-hover';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from './ui/hover-card';
 import { cn } from '@/lib/utils';
