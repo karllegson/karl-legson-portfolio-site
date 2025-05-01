@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ButtonHover } from './ui/button-hover';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from './ui/hover-card';
 import ProfilePicture from './ProfilePicture';
+import TypeWriter from './ui/TypeWriter';
 
 const HeroSection = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -64,8 +65,12 @@ const HeroSection = () => {
             <span className="animate-pulse">◉</span> Available for new projects
           </div>
           
-          <div className={`flex justify-center mb-4 transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`}>
+          {/* Profile Picture with Glow */}
+          <div className="flex justify-center mb-16">
+            {/* Profile Picture */}
+            <div className="relative">
             <ProfilePicture />
+            </div>
           </div>
           
           <h1 className={`text-5xl md:text-7xl font-bold text-white mb-4 transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`} style={{ transitionDelay: '0.2s' }}>
@@ -92,7 +97,10 @@ const HeroSection = () => {
           </h2>
           
           <p className={`text-lg md:text-xl text-neutral-300 mb-10 leading-relaxed max-w-2xl mx-auto transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`} style={{ transitionDelay: '0.6s' }}>
-            Creating modern, minimalist web experiences with a focus on performance and user experience
+            <TypeWriter 
+              text="Creating modern, minimalist web experiences with a focus on performance and user experience"
+              delay={40}
+            />
           </p>
           
           <div className={`flex flex-col sm:flex-row items-center justify-center gap-4 transition-all duration-500 ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`} style={{ transitionDelay: '0.8s' }}>

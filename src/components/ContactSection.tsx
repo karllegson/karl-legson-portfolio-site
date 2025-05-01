@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ButtonHover } from './ui/button-hover';
 import { cn } from '@/lib/utils';
 
@@ -11,6 +10,16 @@ const ContactSection = () => {
   });
   
   const [formStatus, setFormStatus] = useState<null | 'success' | 'error'>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  
+  useEffect(() => {
+    // Add a small delay to ensure the component is mounted before animation
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 300);
+    
+    return () => clearTimeout(timer);
+  }, []);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -39,13 +48,16 @@ const ContactSection = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Get In <span className="heading-highlight">Touch</span>
           </h2>
-          <p className="text-neutral-400 max-w-2xl mx-auto">
+          <p className="text-neutral-100 max-w-2xl mx-auto">
             Interested in working together or have a question? Feel free to reach out and I'll get back to you as soon as possible.
           </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div className="opacity-0 animate-slide-in-left">
+          <div className={cn(
+            "transition-all duration-500",
+            isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
+          )}>
             <h3 className="text-xl font-semibold text-white mb-6">Contact Information</h3>
             
             <div className="space-y-6">
@@ -57,7 +69,7 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <h4 className="text-white font-medium mb-1">Email</h4>
-                  <p className="text-neutral-400">
+                  <p className="text-neutral-100">
                     <a href="mailto:contact@karllegson.com" className="hover:text-highlight transition-colors">
                       contact@karllegson.com
                     </a>
@@ -73,7 +85,7 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <h4 className="text-white font-medium mb-1">Phone</h4>
-                  <p className="text-neutral-400">
+                  <p className="text-neutral-100">
                     <a href="tel:+1234567890" className="hover:text-highlight transition-colors">
                       +1 (234) 567-890
                     </a>
@@ -90,7 +102,7 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <h4 className="text-white font-medium mb-1">Location</h4>
-                  <p className="text-neutral-400">San Francisco, CA</p>
+                  <p className="text-neutral-100">San Francisco, CA</p>
                 </div>
               </div>
             </div>
@@ -136,11 +148,14 @@ const ContactSection = () => {
             </div>
           </div>
           
-          <div className="opacity-0 animate-slide-in-right">
+          <div className={cn(
+            "transition-all duration-500",
+            isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
+          )}>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 gap-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-neutral-300 mb-2">
+                  <label htmlFor="name" className="block text-sm font-medium text-neutral-100 mb-2">
                     Your Name
                   </label>
                   <input
@@ -155,7 +170,7 @@ const ContactSection = () => {
                 </div>
                 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-neutral-300 mb-2">
+                  <label htmlFor="email" className="block text-sm font-medium text-neutral-100 mb-2">
                     Your Email
                   </label>
                   <input
@@ -170,7 +185,7 @@ const ContactSection = () => {
                 </div>
                 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-neutral-300 mb-2">
+                  <label htmlFor="message" className="block text-sm font-medium text-neutral-100 mb-2">
                     Your Message
                   </label>
                   <textarea
