@@ -13,15 +13,15 @@ const skills: Skill[] = [
   { name: "React", progress: 85, category: 'frontend' },
   { name: "Next.js", progress: 60, category: 'frontend' },
   { name: "TypeScript", progress: 75, category: 'frontend' },
-  { name: "Tailwind CSS", progress: 64, category: 'frontend' },
+  { name: "Tailwind CSS", progress: 54, category: 'frontend' },
   
   // Backend Development
   { name: "Node.js", progress: 60, category: 'backend' },
-  { name: "REST APIs", progress: 75, category: 'backend' },
-  { name: "Python", progress: 78, category: 'backend' },
-  { name: "MySQL", progress: 62, category: 'backend' },
-  { name: "Firebase", progress: 76, category: 'backend' },
-  { name: "Database Management", progress: 75, category: 'backend' },
+  { name: "REST APIs", progress: 65, category: 'backend' },
+  { name: "Python", progress: 73, category: 'backend' },
+  { name: "MySQL", progress: 50, category: 'backend' },
+  { name: "Firebase", progress: 70, category: 'backend' },
+  { name: "Database Management", progress: 70, category: 'backend' },
   
   // Tools & Technologies
   { name: "Git/GitHub", progress: 88, category: 'tools' },
@@ -98,7 +98,6 @@ const SkillBar = ({
   >
     <div className="flex justify-between items-center mb-2">
       <span className="text-neutral-300">{skill.name}</span>
-      <span className="text-sm text-neutral-400">{skill.progress}%</span>
     </div>
     <div className="h-2 bg-dark-100 rounded-full overflow-hidden">
       <div 
