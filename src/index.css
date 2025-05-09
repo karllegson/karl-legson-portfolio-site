@@ -43,9 +43,14 @@
     scroll-behavior: smooth;
   }
 
+  html {
+    scrollbar-gutter: stable;
+  }
+
   body {
     @apply bg-dark-200 text-foreground antialiased selection:bg-[#FFDC00]/20 selection:text-[#FFDC00];
     font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-y: scroll;
   }
 
   ::selection {

@@ -23,7 +23,7 @@ const projects: Project[] = [
     title: "HTML Studio Pro",
     description: "HTML Studio Pro is a custom web app I built to streamline SEO content production and delegate tasks securely. By enabling my team to handle formatting and prep work without needing WordPress access, I scaled output from 50 to over 120 tasks per week—increasing my earning potential by over 100% through higher content volume and faster turnaround.",
     imageBefore: "/images/htmlstudioproplanning.png",
-    imageAfter: "/images/htmlstudio.png",
+    imageAfter: "/images/htmlstudiopro.png",
     additionalImages: [
       "/images/htmlstudiopro1.png",
       "/images/htmlstudiopro2.png",
@@ -244,25 +244,25 @@ const ProjectsSection = () => {
                       target="_blank"
                       className={cn(
                         "py-1 px-2",
-                        project.title === "Volunteer Connect"
+                        project.title === "Volunteer Connect" || project.title === "Landing Pages for a Home Service Companies"
                           ? "bg-neutral-800/50 border-neutral-700 cursor-not-allowed"
                           : "bg-[#FFDC00]/10 border-[#FFDC00]/30 hover:bg-[#FFDC00]/20"
                       )}
                       onClick={(e) => {
-                        if (project.title === "Volunteer Connect") {
+                        if (project.title === "Volunteer Connect" || project.title === "Landing Pages for a Home Service Companies") {
                           e.preventDefault();
                         }
                       }}
                     >
                       <span className={cn(
                         "text-xs whitespace-nowrap",
-                        project.title === "Volunteer Connect" ? "text-neutral-400" : "text-[#FFDC00]"
+                        project.title === "Volunteer Connect" || project.title === "Landing Pages for a Home Service Companies" ? "text-neutral-400" : "text-[#FFDC00]"
                       )}>
                         Visit Website
                       </span>
                       <ExternalLink className={cn(
                         "w-3 h-3",
-                        project.title === "Volunteer Connect" ? "text-neutral-400" : "text-[#FFDC00]"
+                        project.title === "Volunteer Connect" || project.title === "Landing Pages for a Home Service Companies" ? "text-neutral-400" : "text-[#FFDC00]"
                       )} />
                     </ButtonHover>
                     {project.githubUrl && (
