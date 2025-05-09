@@ -19,6 +19,22 @@ type Project = {
 
 const projects: Project[] = [
   {
+    id: 5,
+    title: "HTML Studio Pro",
+    description: "HTML Studio Pro is a custom web app I built to streamline SEO content production and delegate tasks securely. By enabling my team to handle formatting and prep work without needing WordPress access, I scaled output from 50 to over 120 tasks per week—increasing my earning potential by over 100% through higher content volume and faster turnaround.",
+    imageBefore: "/images/htmlstudioproplanning.png",
+    imageAfter: "/images/htmlstudio.png",
+    additionalImages: [
+      "/images/htmlstudiopro1.png",
+      "/images/htmlstudiopro2.png",
+      "/images/htmlstudiopro3.png"
+    ],
+    url: "https://html-studio-pro.vercel.app/",
+    githubUrl: "https://github.com/karllegson/html-studio-pro",
+    date: "May 2025",
+    status: "Completed"
+  },
+  {
     id: 1,
     title: "Volunteer Connect",
     description: "A web application designed to streamline the process of matching volunteers with service opportunities. The platform allows organizations to post volunteer events and users to browse, filter, and sign up based on their interests, skills, and availability.",
