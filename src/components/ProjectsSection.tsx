@@ -21,7 +21,7 @@ const projects: Project[] = [
   {
     id: 5,
     title: "HTML Studio Pro",
-    description: "HTML Studio Pro is a custom web app I built to streamline SEO content production and delegate tasks securely. By enabling my team to handle formatting and prep work without needing WordPress access, I scaled output from 50 to over 120 tasks per week—increasing my earning potential by over 100% through higher content volume and faster turnaround.",
+    description: "HTML Studio Pro is a full-stack custom web application I built to support my SEO content posting work. Developed with React, TypeScript, Tailwind CSS, and Firebase, and deployed on Vercel, it streamlines formatting and prep tasks—allowing me to work faster and handle more volume. This tool directly boosted my efficiency, helping me scale from 50 to over 120 tasks per week and significantly increase my earning potential.",
     imageBefore: "/images/htmlstudioproplanning.png",
     imageAfter: "/images/htmlstudiopro.png",
     additionalImages: [
