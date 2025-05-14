@@ -19,6 +19,22 @@ type Project = {
 
 const projects: Project[] = [
   {
+    id: 6,
+    title: "NormalText.com",
+    description: "NormalText is a clean, modern web app that I developed entirely on my own. It serves a simple yet practical purpose: paste in any formatted text, and it instantly strips out all formatting, leaving you with clean, plain text. I created NormalText because I personally needed a quick and reliable way to remove formatting—especially when copying content from tools like ChatGPT or other AI platforms. The site is straightforward, minimalist, and designed for efficiency.",
+    imageBefore: "/images/normaltextplanning.png",
+    imageAfter: "/images/normaltext.png",
+    additionalImages: [
+      "/images/normaltext1.png",
+      "/images/normaltext2.png",
+      "/images/normaltext3.png"
+    ],
+    url: "https://normaltext.com",
+    githubUrl: "https://github.com/karllegson/normaltext",
+    date: "2025",
+    status: "Completed"
+  },
+  {
     id: 5,
     title: "HTML Studio Pro",
     description: "HTML Studio Pro is a full-stack custom web application I built to support my SEO content posting work. Developed with React, TypeScript, Tailwind CSS, and Firebase, and deployed on Vercel, it streamlines formatting and prep tasks—allowing me to work faster and handle more volume. This tool directly boosted my efficiency, helping me scale from 50 to over 120 tasks per week and significantly increase my earning potential.",
