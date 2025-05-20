@@ -19,6 +19,22 @@ type Project = {
 
 const projects: Project[] = [
   {
+    id: 7,
+    title: "WitWars.com",
+    description: "WitWars is a social web app I built after my coworkers and I joked about ranking who's the funniest. It lets users create profiles, add friends, and trade witty messages in real time. Built with React, Vite, Tailwind CSS, Firebase, React Router, and Radix UI, it's fast, fun, and designed for playful interactions.",
+    imageBefore: "/images/witwarsplanning.png",
+    imageAfter: "/images/witwars.png",
+    additionalImages: [
+      "/images/witwars1.png",
+      "/images/witwars2.png",
+      "/images/witwars3.png"
+    ],
+    url: "https://witwars.com",
+    githubUrl: "https://github.com/karllegson/witwars",
+    date: "2025",
+    status: "Completed"
+  },
+  {
     id: 6,
     title: "NormalText.com",
     description: "NormalText is a clean, modern web app that I developed entirely on my own. It serves a simple yet practical purpose: paste in any formatted text, and it instantly strips out all formatting, leaving you with clean, plain text. I created NormalText because I personally needed a quick and reliable way to remove formatting—especially when copying content from tools like ChatGPT or other AI platforms. The site is straightforward, minimalist, and designed for efficiency.",
@@ -162,7 +178,7 @@ const ProjectsSection = () => {
               COLLABORATIVE PROJECTS WITH REAL IMPACT
             </p>
             <h2 className="text-2xl md:text-4xl font-bold text-white">
-              See our latest projects
+              See my latest projects
             </h2>
           </div>
           
