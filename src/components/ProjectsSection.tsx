@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { ButtonHover } from './ui/button-hover';
+import { Badge } from './ui/badge';
 import { ExternalLink, Construction, ChevronDown, ChevronUp, X } from 'lucide-react';
 import ImageModal from './ImageModal';
 
@@ -15,9 +16,55 @@ type Project = {
   githubUrl?: string;
   date: string;
   status?: string;
+  type?: "Solo" | "Team";
 };
 
 const projects: Project[] = [
+  {
+    id: 10,
+    title: "BotOrNot",
+    description: "I worked with a team to develop BotOrNot, an arcade-style social deduction game built during a hackathon. Players face off against an AI-powered imposter NPC that tries to blend in by answering timed questions like a human. My role focused on the development side, helping implement the gameplay mechanics and AI integration.",
+    imageBefore: "/images/BotOrNotplanning.png",
+    imageAfter: "/images/BotOrNot1.png",
+    additionalImages: [
+      "/images/BotOrNot2.png",
+      "/images/BotOrNot3.png"
+    ],
+    url: "https://botornot.space",
+    date: "2025",
+    status: "Completed",
+    type: "Team"
+  },
+  {
+    id: 9,
+    title: "Rotorhead Partners",
+    description: "I worked with a team to build the Rotorhead Partners website, a platform that highlights the company's mission of helping organizations strengthen leadership, communication, and collaboration. My main focus was the About page, where I developed the structure and layout to showcase the founder's unique background as a Navy helicopter pilot, startup leader, and facilitator.",
+    imageBefore: "/images/Rotorheadplanning.png",
+    imageAfter: "/images/Rotorhead1.png",
+    additionalImages: [
+      "/images/Rotorhead2.png",
+      "/images/Rotorhead3.png"
+    ],
+    url: "https://rotorheadpartners.com",
+    date: "2025",
+    status: "Completed",
+    type: "Team"
+  },
+  {
+    id: 8,
+    title: "SVAEC",
+    description: "I collaborated with a development team to build the Salinas Valley Adult Education Consortium (SVAEC) website, a resource hub that connects adult learners with GED preparation, English classes, career training, computer skills, and citizenship courses. My main contribution was developing the Success Stories page, which highlights real student achievements in a responsive and user-friendly format.",
+    imageBefore: "/images/SVAECplanning.png",
+    imageAfter: "/images/SVAEC1.png",
+    additionalImages: [
+      "/images/SVAEC2.png",
+      "/images/SVAEC3.png"
+    ],
+    url: "https://svaec.org",
+    date: "2025",
+    status: "Completed",
+    type: "Team"
+  },
   {
     id: 7,
     title: "WitWars.com",
@@ -32,7 +79,8 @@ const projects: Project[] = [
     url: "https://witwars.com",
     githubUrl: "https://github.com/karllegson/witwars",
     date: "2025",
-    status: "Completed"
+    status: "Completed",
+    type: "Solo"
   },
   {
     id: 6,
@@ -48,7 +96,8 @@ const projects: Project[] = [
     url: "https://normaltext.com",
     githubUrl: "https://github.com/karllegson/normaltext",
     date: "2025",
-    status: "Completed"
+    status: "Completed",
+    type: "Solo"
   },
   {
     id: 5,
@@ -64,7 +113,8 @@ const projects: Project[] = [
     url: "https://html-studio-pro.vercel.app/",
     githubUrl: "https://github.com/karllegson/html-studio-pro",
     date: "May 2025",
-    status: "Completed"
+    status: "Completed",
+    type: "Solo"
   },
   {
     id: 1,
@@ -80,7 +130,8 @@ const projects: Project[] = [
     url: "",
     githubUrl: "https://github.com/joavelar/VolunteerConnect",
     date: "February 2025",
-    status: "In Development"
+    status: "In Development",
+    type: "Team"
   },
   {
     id: 2,
@@ -96,7 +147,8 @@ const projects: Project[] = [
     url: "https://careerharvest.org",
     githubUrl: "https://github.com/BizzNEST/career-harvest",
     date: "March 2024",
-    status: "In Development"
+    status: "In Development",
+    type: "Team"
   },
   {
     id: 3,
@@ -112,7 +164,8 @@ const projects: Project[] = [
     url: "https://bizznest.github.io/modesto-bizznest-scheduler/",
     githubUrl: "https://github.com/BizzNEST/modesto-bizznest-scheduler",
     date: "December 2024",
-    status: "Completed"
+    status: "Completed",
+    type: "Team"
   },
   {
     id: 4,
@@ -127,7 +180,8 @@ const projects: Project[] = [
     ],
     url: "",
     date: "January 2025",
-    status: "Completed"
+    status: "Completed",
+    type: "Team"
   }
 ];
 
@@ -196,6 +250,19 @@ const ProjectsSection = () => {
                     <h3 className="text-lg font-bold text-white">
                       {project.title}
                     </h3>
+                    {project.type && (
+                      <Badge 
+                        variant="secondary" 
+                        className={cn(
+                          "text-xs px-2 py-0.5",
+                          project.type === "Solo" 
+                            ? "bg-blue-500/10 text-blue-400 border-blue-500/30" 
+                            : "bg-purple-500/10 text-purple-400 border-purple-500/30"
+                        )}
+                      >
+                        {project.type}
+                      </Badge>
+                    )}
                     {project.status === "In Development" && (
                       <div className="flex items-center gap-1 bg-[#FFDC00]/10 px-2 py-0.5 rounded-full">
                         <Construction className="w-3 h-3 text-[#FFDC00]" />
@@ -273,7 +340,7 @@ const ProjectsSection = () => {
                     </span>
                     <ButtonHover 
                       href={project.url}
-                      target="_blank"
+                      target={project.url.startsWith('/') ? undefined : "_blank"}
                       className={cn(
                         "py-1 px-2",
                         project.title === "Volunteer Connect" || project.title === "Landing Pages for a Home Service Companies"
@@ -290,12 +357,14 @@ const ProjectsSection = () => {
                         "text-xs whitespace-nowrap",
                         project.title === "Volunteer Connect" || project.title === "Landing Pages for a Home Service Companies" ? "text-neutral-400" : "text-[#FFDC00]"
                       )}>
-                        Visit Website
+                        {project.url.startsWith('/') ? 'View Details' : 'Visit Website'}
                       </span>
-                      <ExternalLink className={cn(
-                        "w-3 h-3",
-                        project.title === "Volunteer Connect" || project.title === "Landing Pages for a Home Service Companies" ? "text-neutral-400" : "text-[#FFDC00]"
-                      )} />
+                      {!project.url.startsWith('/') && (
+                        <ExternalLink className={cn(
+                          "w-3 h-3",
+                          project.title === "Volunteer Connect" || project.title === "Landing Pages for a Home Service Companies" ? "text-neutral-400" : "text-[#FFDC00]"
+                        )} />
+                      )}
                     </ButtonHover>
                     {project.githubUrl && (
                       <a 
@@ -310,6 +379,7 @@ const ProjectsSection = () => {
                         </svg>
                       </a>
                     )}
+
                   </div>
                 </div>
               </div>
