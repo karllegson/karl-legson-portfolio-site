@@ -45,7 +45,7 @@ const projects: Project[] = [
       "/images/Rotorhead2.png",
       "/images/Rotorhead3.png"
     ],
-    url: "https://rotorheadpartners.com",
+    url: "https://rotorheadpartners.us/",
     date: "2025",
     status: "Completed",
     type: "Team"
