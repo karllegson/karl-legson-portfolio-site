@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Heart } from 'lucide-react';
 
 interface MusicBoxProps {
@@ -68,6 +68,15 @@ const createNotePlayer = (): NotePlayer | null => {
   return { start, stop, playPulse };
 };
 
+const getPointerAngle = (e: React.PointerEvent) => {
+  const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  const dx = e.clientX - cx;
+  const dy = e.clientY - cy;
+  return Math.atan2(dy, dx) * (180 / Math.PI);
+};
+
 const MusicBox = ({ onContinue }: MusicBoxProps) => {
   const [angle, setAngle] = useState(0);
   const [isTurning, setIsTurning] = useState(false);
@@ -75,6 +84,17 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const draggingRef = useRef(false);
   const lastAngleRef = useRef(0);
+  const startPointerAngleRef = useRef(0);
+  const startHandleAngleRef = useRef(0);
+
+  const glitterPositions = useMemo(
+    () =>
+      Array.from({ length: 12 }, () => ({
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+      })),
+    []
+  );
 
   useEffect(() => {
     playerRef.current = createNotePlayer();
@@ -90,9 +110,10 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
     draggingRef.current = true;
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
     setIsTurning(true);
+    startPointerAngleRef.current = getPointerAngle(e);
+    startHandleAngleRef.current = lastAngleRef.current;
     if (audioRef.current) {
       try {
-        audioRef.current.currentTime = 0;
         audioRef.current.play().catch(() => playerRef.current?.playPulse());
       } catch {
         playerRef.current?.playPulse();
@@ -104,15 +125,11 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
 
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!draggingRef.current) return;
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    const dx = e.clientX - cx;
-    const dy = e.clientY - cy;
-    const newAngle = Math.atan2(dy, dx) * (180 / Math.PI);
-    const normalized = ((newAngle + 360) % 360);
-    setAngle(normalized);
-    lastAngleRef.current = normalized;
+    const pointerAngle = getPointerAngle(e);
+    const delta = pointerAngle - startPointerAngleRef.current;
+    const newAngle = startHandleAngleRef.current + delta;
+    setAngle(newAngle);
+    lastAngleRef.current = newAngle;
     playerRef.current?.playPulse();
   };
 
@@ -127,43 +144,102 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
   };
 
   return (
-    <div className="kristel-screen kristel-screen-music-box min-h-screen flex items-center justify-center px-6">
-      <div className="w-full max-w-[420px] text-center space-y-8">
-        <div className="flex flex-col items-center gap-3">
-          <Heart className="w-12 h-12 text-rose-dark fill-rose-dark" />
-          <p className="text-lg text-gray-700">Wind it up to hear the melody</p>
-          <p className="text-sm text-gray-500">Music plays only while you turn it</p>
+    <div className="kristel-screen kristel-screen-music-box min-h-screen flex items-center justify-center px-6 relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(8)].map((_, i) => (
+          <Heart
+            key={i}
+            className="absolute text-rose-medium/30 animate-float"
+            style={{
+              left: `${8 + i * 10}%`,
+              top: `${6 + (i % 4) * 20}%`,
+              width: 16 + (i % 3) * 5,
+              height: 16 + (i % 3) * 5,
+              animationDelay: `${i * 0.35}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="w-full max-w-[440px] text-center space-y-8 relative z-10">
+        <div className="flex flex-col items-center gap-2">
+          <Heart className="w-12 h-12 text-rose-dark fill-rose-dark animate-heart-pulse" />
+          <p className="text-xl text-gray-800 font-semibold">Wind the music box</p>
         </div>
 
-        <div className="relative w-52 h-52 mx-auto">
-          <div className="absolute inset-0 rounded-full bg-white/80 border-2 border-rose-medium/40 shadow-md" />
-          <div className="absolute inset-4 rounded-full border-2 border-rose-medium/30 bg-gradient-to-br from-rose-soft to-white" />
+        <div
+          className="relative w-72 h-80 mx-auto select-none touch-none cursor-grab active:cursor-grabbing"
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={stopTurning}
+          onPointerCancel={stopTurning}
+          role="button"
+          aria-label="Wind music box"
+        >
+          {/* Dancing couple when box is open */}
+          {isTurning && (
+            <img
+              src="/music-box-couple.png"
+              alt="Dancing couple"
+              className="absolute left-1/2 -translate-x-1/2 w-28 h-auto pointer-events-none select-none animate-couple-dance z-10"
+              style={{ top: '10%' }}
+              draggable={false}
+            />
+          )}
+
+          {/* Box image - swaps between closed and open */}
+          <img
+            src={isTurning ? '/music-box-open.png' : '/music-box-closed.png'}
+            alt="Music box"
+            className="w-full h-full object-contain drop-shadow-2xl pointer-events-none select-none transition-all duration-300"
+            draggable={false}
+          />
+
+          {/* Rotating handle overlay - aligned to gray diamond connector */}
           <div
-            className="absolute inset-0 flex items-center justify-center select-none touch-none"
-            onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
-            onPointerUp={stopTurning}
-            onPointerCancel={stopTurning}
-            role="button"
-            aria-label="Wind music box"
+            className="absolute left-1/2 pointer-events-none z-20"
+            style={{ top: isTurning ? '62%' : '50%' }}
           >
             <div
-              className={`relative w-20 h-20 rounded-full bg-rose-dark text-white flex items-center justify-center shadow-lg transition-transform duration-150 ${
-                isTurning ? 'scale-105' : ''
-              }`}
-              style={{ transform: `rotate(${angle}deg)` }}
+              className="relative flex items-center"
+              style={{ transform: `rotate(${angle}deg)`, transformOrigin: 'left center' }}
             >
-              <span className="font-semibold">Turn</span>
-              <div className="absolute right-[-20px] w-12 h-3 rounded-full bg-rose-medium shadow" />
+              {/* Crank arm */}
+              <div className="w-16 h-3.5 rounded-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300 shadow-lg border border-amber-600/40" />
+              {/* Crank knob */}
+              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-amber-300 to-amber-500 shadow-md border border-amber-600/50 -ml-1" />
             </div>
           </div>
+
+          {/* Glitter effect when open/playing (static stars, no animation and no position changes while turning) */}
+          {isTurning && (
+            <div className="absolute left-1/2 top-[20%] -translate-x-1/2 pointer-events-none w-24 h-24">
+              {glitterPositions.map((pos, i) => (
+                <div
+                  key={i}
+                  className="absolute animate-glitter"
+                  style={{
+                    left: pos.left,
+                    top: pos.top,
+                  }}
+                >
+                  <svg width="10" height="10" viewBox="0 0 10 10" className="text-amber-300">
+                    <polygon
+                      points="5,0 6,4 10,5 6,6 5,10 4,6 0,5 4,4"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <audio ref={audioRef} src="/WhenImetu.m4a" preload="auto" />
 
         <button
           onClick={onContinue}
-          className="w-full py-4 bg-rose-dark text-white rounded-xl font-medium text-lg hover:bg-rose-dark/90 transition-colors"
+          className="w-full py-4 bg-rose-dark text-white rounded-xl font-medium text-lg hover:bg-rose-dark/90 transition-colors shadow-lg"
         >
           Continue
         </button>

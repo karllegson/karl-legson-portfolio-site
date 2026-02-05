@@ -121,6 +121,60 @@
   animation-duration: 0.65s;
 }
 
+@keyframes doll-dance {
+  0% { transform: translateX(-50%) rotate(-6deg) scale(1.02); }
+  50% { transform: translateX(-50%) rotate(6deg) scale(1.05); }
+  100% { transform: translateX(-50%) rotate(-6deg) scale(1.02); }
+}
+
+@keyframes doll-rest {
+  0% { transform: translateX(-50%) rotate(0deg) scale(1); }
+  100% { transform: translateX(-50%) rotate(0deg) scale(1); }
+}
+
+@keyframes doll-spin {
+  0% { transform: translateX(-50%) rotate(0deg) scale(1); }
+  100% { transform: translateX(-50%) rotate(360deg) scale(1); }
+}
+
+.animate-doll-dance {
+  animation: doll-dance 0.7s ease-in-out infinite;
+}
+
+.animate-doll-spin {
+  animation: doll-spin 1.6s linear infinite;
+}
+
+.animate-doll-rest {
+  animation: doll-rest 0.6s ease-out forwards;
+}
+
+@keyframes glitter {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-glitter {
+  animation: glitter 2s ease-in-out infinite;
+}
+
+@keyframes couple-dance {
+  0%, 100% {
+    transform: translateX(-50%) rotate(-2deg);
+  }
+  50% {
+    transform: translateX(-50%) rotate(2deg);
+  }
+}
+
+.animate-couple-dance {
+  animation: couple-dance 1.5s ease-in-out infinite;
+}
+
 /* Invitation: float up with slight ease */
 @keyframes kristel-invitation-in {
   from {
