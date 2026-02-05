@@ -1,0 +1,154 @@
+/* Unique transitions for /kristel only. All scoped under .kristel-page. */
+
+.kristel-page .kristel-screen {
+  animation-duration: 0.6s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}
+
+/* Lock: soft scale-in + fade (first screen) */
+@keyframes kristel-lock-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.kristel-page .kristel-screen-lock {
+  animation-name: kristel-lock-in;
+}
+
+/* Welcome: slide up from below + fade */
+@keyframes kristel-welcome-in {
+  from {
+    opacity: 0;
+    transform: translateY(36px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.kristel-page .kristel-screen-welcome {
+  animation-name: kristel-welcome-in;
+  animation-duration: 0.55s;
+}
+
+/* Context: slide in from right + fade */
+@keyframes kristel-context-in {
+  from {
+    opacity: 0;
+    transform: translateX(48px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.kristel-page .kristel-screen-context {
+  animation-name: kristel-context-in;
+  animation-duration: 0.5s;
+}
+
+/* Quiz intro: gentle bounce + fade */
+@keyframes kristel-quiz-intro-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.kristel-page .kristel-screen-quiz-intro {
+  animation-name: kristel-quiz-intro-in;
+  animation-duration: 0.6s;
+}
+
+/* Quiz question: slide in from left (card feel) */
+@keyframes kristel-quiz-in {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.kristel-page .kristel-screen-quiz {
+  animation-name: kristel-quiz-in;
+  animation-duration: 0.45s;
+}
+
+/* Quiz result: zoom in + fade */
+@keyframes kristel-quiz-result-in {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.kristel-page .kristel-screen-quiz-result {
+  animation-name: kristel-quiz-result-in;
+  animation-duration: 0.55s;
+}
+
+/* Invitation: float up with slight ease */
+@keyframes kristel-invitation-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.kristel-page .kristel-screen-invitation {
+  animation-name: kristel-invitation-in;
+  animation-duration: 0.6s;
+}
+
+/* Confirmation: subtle spin + scale (with confetti) */
+@keyframes kristel-confirmation-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9) rotate(-4deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+.kristel-page .kristel-screen-confirmation {
+  animation-name: kristel-confirmation-in;
+  animation-duration: 0.6s;
+}
+
+/* Countdown: scale from center + fade */
+@keyframes kristel-countdown-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.kristel-page .kristel-screen-countdown {
+  animation-name: kristel-countdown-in;
+  animation-duration: 0.65s;
+}

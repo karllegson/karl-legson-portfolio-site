@@ -55,6 +55,16 @@ src/
   └── types/         # TypeScript type definitions
 ```
 
+## Database (Supabase)
+
+Contact form submissions can be stored in Supabase. See **[docs/SUPABASE_SETUP.md](docs/SUPABASE_SETUP.md)** for:
+
+- Creating a Supabase project and getting API keys
+- Adding `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` to `.env`
+- Running the SQL to create the `contact_submissions` table and RLS
+
+With Supabase configured, submissions are saved to the database; EmailJS (if configured) still sends the email. You can use one or both.
+
 ## Customization
 
 The site can be easily customized by modifying the following:
