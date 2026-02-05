@@ -70,10 +70,17 @@ export default {
 					200: '#121212',
 					300: '#0a0a0a',
 				},
+				rose: {
+					soft: '#fdf2f4',
+					medium: '#f9a8ba',
+					dark: '#e11d48',
+				},
+				cream: '#fff9f5',
 			},
 			fontFamily: {
 				sans: ['Inter var', 'Inter', 'sans-serif'],
 				mono: ['JetBrains Mono', 'monospace'],
+				script: ['Dancing Script', 'cursive'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -117,6 +124,18 @@ export default {
 					'0%': { transform: 'rotate(0deg)' },
 					'100%': { transform: 'rotate(360deg)' },
 				},
+				'heart-pulse': {
+					'0%, 100%': { transform: 'scale(1)' },
+					'50%': { transform: 'scale(1.2)' },
+				},
+				'fade-in-up': {
+					'0%': { opacity: '0', transform: 'translateY(20px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' },
+				},
+				'confetti-fall': {
+					'0%': { transform: 'translateY(-100%) rotate(0deg)', opacity: '1' },
+					'100%': { transform: 'translateY(100vh) rotate(720deg)', opacity: '0' },
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -128,6 +147,9 @@ export default {
 				'float': 'float 3s ease-in-out infinite',
 				'pulse': 'pulse 2s ease-in-out infinite',
 				'rotate-slow': 'rotate-slow 8s linear infinite',
+				'heart-pulse': 'heart-pulse 0.6s ease-in-out',
+				'fade-in-up': 'fade-in-up 0.5s ease-out forwards',
+				'confetti-fall': 'confetti-fall 3s ease-out forwards',
 			},
 			backgroundImage: {
 				'grid-pattern': "url('/grid-pattern.svg')",

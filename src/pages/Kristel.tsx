@@ -6,6 +6,7 @@ import ContextScreen from '@/components/kristel/ContextScreen';
 import QuizIntro from '@/components/kristel/QuizIntro';
 import QuizQuestion from '@/components/kristel/QuizQuestion';
 import QuizResult from '@/components/kristel/QuizResult';
+import MusicBox from '@/components/kristel/MusicBox';
 import InvitationScreen from '@/components/kristel/InvitationScreen';
 import ConfirmationScreen from '@/components/kristel/ConfirmationScreen';
 import CountdownScreen from '@/components/kristel/CountdownScreen';
@@ -19,11 +20,13 @@ type Screen =
   | 'quiz-intro'
   | 'quiz'
   | 'quiz-result'
+  | 'music-box'
   | 'invitation'
   | 'confirmation'
   | 'countdown';
 
 const Kristel = () => {
+  const isDev = import.meta.env.DEV;
   const [currentScreen, setCurrentScreen] = useState<Screen>('lock');
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
@@ -71,6 +74,33 @@ const Kristel = () => {
     }
   };
 
+  const devSkip = () => {
+    const order: Screen[] = [
+      'lock',
+      'welcome',
+      'context',
+      'quiz-intro',
+      'quiz',
+      'quiz-result',
+      'music-box',
+      'invitation',
+      'confirmation',
+      'countdown',
+    ];
+    const idx = order.indexOf(currentScreen);
+    if (idx === -1 || idx === order.length - 1) return;
+
+    // Reset quiz state when jumping past quiz intro
+    if (order[idx] === 'quiz-intro') {
+      setCurrentQuestion(0);
+      setAnswers([]);
+      setScore(0);
+    }
+
+    const next = order[idx + 1];
+    transitionTo(next);
+  };
+
   const renderScreen = () => {
     switch (currentScreen) {
       case 'lock':
@@ -96,9 +126,11 @@ const Kristel = () => {
           <QuizResult
             score={score}
             total={quizQuestions.length}
-            onContinue={() => transitionTo('invitation')}
+            onContinue={() => transitionTo('music-box')}
           />
         );
+      case 'music-box':
+        return <MusicBox onContinue={() => transitionTo('invitation')} />;
       case 'invitation':
         return <InvitationScreen onAccept={() => transitionTo('confirmation')} />;
       case 'confirmation':
@@ -121,6 +153,16 @@ const Kristel = () => {
       >
         {renderScreen()}
       </div>
+      {isDev && (
+        <div className="fixed bottom-4 right-4 z-50">
+          <button
+            onClick={devSkip}
+            className="px-4 py-2 rounded-lg bg-rose-dark text-white shadow hover:bg-rose-dark/90 transition-colors text-sm"
+          >
+            Skip (dev)
+          </button>
+        </div>
+      )}
     </div>
   );
 };

@@ -105,6 +105,22 @@
   animation-duration: 0.55s;
 }
 
+/* Music box: gentle spin + fade */
+@keyframes kristel-music-box-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9) rotate(-6deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+.kristel-page .kristel-screen-music-box {
+  animation-name: kristel-music-box-in;
+  animation-duration: 0.65s;
+}
+
 /* Invitation: float up with slight ease */
 @keyframes kristel-invitation-in {
   from {
