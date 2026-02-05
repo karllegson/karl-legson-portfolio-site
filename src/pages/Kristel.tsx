@@ -82,10 +82,10 @@ const Kristel = () => {
       'quiz-intro',
       'quiz',
       'quiz-result',
-      'music-box',
       'invitation',
       'confirmation',
       'countdown',
+      'music-box',
     ];
     const idx = order.indexOf(currentScreen);
     if (idx === -1 || idx === order.length - 1) return;
@@ -126,7 +126,7 @@ const Kristel = () => {
           <QuizResult
             score={score}
             total={quizQuestions.length}
-            onContinue={() => transitionTo('music-box')}
+            onContinue={() => transitionTo('invitation')}
           />
         );
       case 'music-box':
@@ -136,7 +136,7 @@ const Kristel = () => {
       case 'confirmation':
         return <ConfirmationScreen onContinue={() => transitionTo('countdown')} />;
       case 'countdown':
-        return <CountdownScreen />;
+        return <CountdownScreen onContinue={() => transitionTo('music-box')} />;
       default:
         return <LockScreen onUnlock={handleUnlock} />;
     }

@@ -8,13 +8,18 @@ interface TimeLeft {
   seconds: number;
 }
 
-const CountdownScreen = () => {
+interface CountdownScreenProps {
+  onContinue: () => void;
+}
+
+const CountdownScreen = ({ onContinue }: CountdownScreenProps) => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
   });
+  const [isUnlocked, setIsUnlocked] = useState(false);
 
   useEffect(() => {
     const targetDate = new Date('2026-02-14T18:00:00');
@@ -30,6 +35,15 @@ const CountdownScreen = () => {
           minutes: Math.floor((difference / 1000 / 60) % 60),
           seconds: Math.floor((difference / 1000) % 60),
         });
+        setIsUnlocked(false);
+      } else {
+        setTimeLeft({
+          days: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0,
+        });
+        setIsUnlocked(true);
       }
     };
 
@@ -74,15 +88,24 @@ const CountdownScreen = () => {
           I promise… it's worth the wait
         </p>
 
-        <div className="mt-12 flex justify-center gap-1">
-          {[...Array(3)].map((_, i) => (
-            <Heart
-              key={i}
-              className="w-4 h-4 text-rose-medium fill-rose-medium"
-              style={{ animationDelay: `${i * 0.2}s` }}
-            />
-          ))}
-        </div>
+        {isUnlocked ? (
+          <button
+            onClick={onContinue}
+            className="mt-10 inline-flex items-center justify-center px-6 py-3 rounded-xl bg-rose-dark text-white font-semibold text-lg shadow-lg hover:bg-rose-dark/90 transition-colors"
+          >
+            Open your surprise
+          </button>
+        ) : (
+          <div className="mt-12 flex justify-center gap-1">
+            {[...Array(3)].map((_, i) => (
+              <Heart
+                key={i}
+                className="w-4 h-4 text-rose-medium fill-rose-medium"
+                style={{ animationDelay: `${i * 0.2}s` }}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -93,7 +93,7 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
         left: `${Math.random() * 100}%`,
         top: `${Math.random() * 100}%`,
       })),
-    []
+    [isTurning]
   );
 
   useEffect(() => {
@@ -232,6 +232,38 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
                 </div>
               ))}
             </div>
+          )}
+
+          {/* Low-key kitty & love stickers while playing */}
+          {isTurning && (
+            <>
+              <div className="absolute bottom-2 right-3 pointer-events-none opacity-80">
+                <img
+                  src="/kristel-musicbox-kitty.gif"
+                  alt="For you my love"
+                  className="w-20 h-20 object-contain drop-shadow-md"
+                  draggable={false}
+                />
+              </div>
+
+              <div className="absolute top-1 right-0 pointer-events-none opacity-75">
+                <img
+                  src="/kristel-musicbox-coolcat.png"
+                  alt="Cool love cat"
+                  className="w-12 h-12 object-contain"
+                  draggable={false}
+                />
+              </div>
+
+              <div className="absolute bottom-0 left-0 pointer-events-none opacity-75">
+                <img
+                  src="/kristel-musicbox-kitty-aura.png"
+                  alt="Love aura kitty"
+                  className="w-16 h-16 object-contain"
+                  draggable={false}
+                />
+              </div>
+            </>
           )}
         </div>
 

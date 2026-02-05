@@ -17,14 +17,25 @@ const QuizQuestion = ({
 }: QuizQuestionProps) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [sadHamsterIndex, setSadHamsterIndex] = useState<number | null>(null);
+  const [happyHamsterIndex, setHappyHamsterIndex] = useState<number | null>(null);
 
   const handleSelect = (index: number) => {
     if (selectedIndex !== null) return;
 
     setSelectedIndex(index);
-    setShowFeedback(true);
-
     const isCorrect = index === question.correctIndex;
+    if (!isCorrect) {
+      const randomIndex = Math.floor(Math.random() * 3);
+      setSadHamsterIndex(randomIndex);
+      setHappyHamsterIndex(null);
+    } else {
+      setSadHamsterIndex(null);
+      const randomIndex = Math.floor(Math.random() * 6);
+      setHappyHamsterIndex(randomIndex);
+    }
+
+    setShowFeedback(true);
     onAnswer(isCorrect, index);
   };
 
@@ -91,7 +102,47 @@ const QuizQuestion = ({
         </div>
 
         {showFeedback && (
-          <div className="mt-8 text-center animate-fade-in-up">
+          <div className="mt-8 text-center animate-fade-in-up space-y-4">
+            {!isCorrect && sadHamsterIndex !== null && (
+              <div className="flex justify-center">
+                <img
+                  src={
+                    sadHamsterIndex === 0
+                      ? '/kristel-wrong-1.png'
+                      : sadHamsterIndex === 1
+                      ? '/kristel-wrong-2.png'
+                      : '/kristel-wrong-3.gif'
+                  }
+                  alt="Sad but still cute reaction"
+                  className="w-32 h-32 object-contain rounded-xl"
+                  draggable={false}
+                />
+              </div>
+            )}
+
+            {isCorrect && happyHamsterIndex !== null && (
+              <div className="flex justify-center">
+                <img
+                  src={
+                    happyHamsterIndex === 0
+                      ? '/kristel-correct-1.png'
+                      : happyHamsterIndex === 1
+                      ? '/kristel-correct-2.png'
+                      : happyHamsterIndex === 2
+                      ? '/kristel-correct-3.png'
+                      : happyHamsterIndex === 3
+                      ? '/kristel-correct-4.png'
+                      : happyHamsterIndex === 4
+                      ? '/kristel-correct-5.png'
+                      : '/kristel-correct-6.png'
+                  }
+                  alt="Happy celebration reaction"
+                  className="w-32 h-32 object-contain rounded-xl"
+                  draggable={false}
+                />
+              </div>
+            )}
+
             <p className="text-xl text-gray-700 font-medium">
               {feedbackMessage}
             </p>

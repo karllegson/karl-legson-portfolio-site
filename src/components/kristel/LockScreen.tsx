@@ -10,6 +10,7 @@ const LockScreen = ({ onUnlock }: LockScreenProps) => {
   const [day, setDay] = useState('');
   const [error, setError] = useState('');
   const [isUnlocking, setIsUnlocking] = useState(false);
+  const [wrongHamsterIndex, setWrongHamsterIndex] = useState<number | null>(null);
   const dayRef = useRef<HTMLInputElement>(null);
 
   const correctMonth = '09';
@@ -19,6 +20,7 @@ const LockScreen = ({ onUnlock }: LockScreenProps) => {
     const value = e.target.value.replace(/\D/g, '').slice(0, 2);
     setMonth(value);
     setError('');
+    setWrongHamsterIndex(null);
     if (value.length === 2) {
       dayRef.current?.focus();
     }
@@ -28,6 +30,7 @@ const LockScreen = ({ onUnlock }: LockScreenProps) => {
     const value = e.target.value.replace(/\D/g, '').slice(0, 2);
     setDay(value);
     setError('');
+    setWrongHamsterIndex(null);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -35,11 +38,14 @@ const LockScreen = ({ onUnlock }: LockScreenProps) => {
 
     if (month === correctMonth && day === correctDay) {
       setIsUnlocking(true);
+      setWrongHamsterIndex(null);
       setTimeout(onUnlock, 800);
     } else {
       setError('Hmm… try again, my love');
       setMonth('');
       setDay('');
+      const randomIndex = Math.floor(Math.random() * 3);
+      setWrongHamsterIndex(randomIndex);
     }
   };
 
@@ -62,7 +68,7 @@ const LockScreen = ({ onUnlock }: LockScreenProps) => {
           For Kristel
         </h1>
         <p className="text-gray-600 text-lg mb-8">
-          Enter the code
+          Enter our secret code
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -72,7 +78,7 @@ const LockScreen = ({ onUnlock }: LockScreenProps) => {
               inputMode="numeric"
               value={month}
               onChange={handleMonthChange}
-              placeholder="MM"
+              placeholder="??"
               className="w-20 h-16 text-center text-2xl font-medium text-gray-800 placeholder:text-gray-400 bg-white/80 border-2 border-rose-medium/30 rounded-xl focus:border-rose-dark focus:outline-none transition-colors"
               maxLength={2}
             />
@@ -83,7 +89,7 @@ const LockScreen = ({ onUnlock }: LockScreenProps) => {
               inputMode="numeric"
               value={day}
               onChange={handleDayChange}
-              placeholder="DD"
+              placeholder="??"
               className="w-20 h-16 text-center text-2xl font-medium text-gray-800 placeholder:text-gray-400 bg-white/80 border-2 border-rose-medium/30 rounded-xl focus:border-rose-dark focus:outline-none transition-colors"
               maxLength={2}
             />
@@ -93,6 +99,23 @@ const LockScreen = ({ onUnlock }: LockScreenProps) => {
             <p className="text-rose-dark text-sm animate-fade-in">
               {error}
             </p>
+          )}
+
+          {wrongHamsterIndex !== null && (
+            <div className="mt-4 flex justify-center">
+              <img
+                src={
+                  wrongHamsterIndex === 0
+                    ? '/kristel-wrong-1.png'
+                    : wrongHamsterIndex === 1
+                    ? '/kristel-wrong-2.png'
+                    : '/kristel-wrong-3.gif'
+                }
+                alt="Cute wrong code reaction"
+                className="w-24 h-24 object-contain rounded-xl"
+                draggable={false}
+              />
+            </div>
           )}
 
           <button
