@@ -24,6 +24,7 @@ interface KristelRunPayload {
   score: number;
   total: number;
   answers: number[]; // selected option indices per question
+  foodChoice?: string; // What she picked for the food question
 }
 
 export async function saveKristelRun(payload: KristelRunPayload) {
@@ -36,6 +37,7 @@ export async function saveKristelRun(payload: KristelRunPayload) {
     score: payload.score,
     total: payload.total,
     answers: payload.answers,
+    food_choice: payload.foodChoice || null,
   });
 
   if (error) {

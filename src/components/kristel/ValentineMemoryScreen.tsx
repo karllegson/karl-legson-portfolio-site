@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { Heart } from 'lucide-react';
+import { playHeartbeat } from './kristelSounds';
 
 interface ValentineMemoryScreenProps {
   year: string;
@@ -8,6 +10,10 @@ interface ValentineMemoryScreenProps {
 }
 
 const ValentineMemoryScreen = ({ year, imagePath, message, onContinue }: ValentineMemoryScreenProps) => {
+  useEffect(() => {
+    playHeartbeat();
+  }, []);
+
   // Normalize imagePath to array
   const imagePaths = imagePath 
     ? (Array.isArray(imagePath) ? imagePath : [imagePath])

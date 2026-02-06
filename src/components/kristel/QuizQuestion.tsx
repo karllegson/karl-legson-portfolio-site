@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { QuizQuestion as QuizQuestionType, correctFeedback, wrongFeedback } from './quizData';
 import { Check, X } from 'lucide-react';
+import { playCorrect, playWrong } from './kristelSounds';
 
 interface QuizQuestionProps {
   question: QuizQuestionType;
@@ -19,16 +20,19 @@ const QuizQuestion = ({
   const [showFeedback, setShowFeedback] = useState(false);
   const [sadHamsterIndex, setSadHamsterIndex] = useState<number | null>(null);
   const [happyHamsterIndex, setHappyHamsterIndex] = useState<number | null>(null);
+  const [locked, setLocked] = useState(false);
 
   const handleSelect = (index: number) => {
-    // If already answered correctly, don't allow more clicks
-    if (selectedIndex !== null && (question.anyAnswerCorrect || selectedIndex === question.correctIndex)) return;
+    // Block all clicks while locked (wrong answer cooldown or correct answer)
+    if (locked) return;
 
     // If anyAnswerCorrect is true, any answer is correct
     const isCorrect = question.anyAnswerCorrect ? true : index === question.correctIndex;
     
     if (!isCorrect) {
-      // Wrong answer: show sad hamster, reset after a moment so they can try again
+      // Wrong answer: lock inputs, show sad hamster, reset after a moment
+      setLocked(true);
+      playWrong();
       const randomIndex = Math.floor(Math.random() * 3);
       setSadHamsterIndex(randomIndex);
       setHappyHamsterIndex(null);
@@ -40,9 +44,12 @@ const QuizQuestion = ({
         setSelectedIndex(null);
         setShowFeedback(false);
         setSadHamsterIndex(null);
+        setLocked(false);
       }, 2000);
     } else {
-      // Correct answer: show happy hamster and proceed
+      // Correct answer: lock inputs, show happy hamster and proceed
+      setLocked(true);
+      playCorrect();
       setSadHamsterIndex(null);
       const randomIndex = Math.floor(Math.random() * 6);
       setHappyHamsterIndex(randomIndex);
@@ -80,14 +87,14 @@ const QuizQuestion = ({
               'w-full py-4 px-6 text-left rounded-xl font-medium text-lg transition-all duration-200 ';
 
             if (!showResult) {
-              buttonClass += 'bg-white/80 border-2 border-rose-medium/30 text-gray-800 hover:border-rose-dark hover:bg-white';
+              buttonClass += 'bg-white/80 border-2 border-rose-medium/30 text-gray-800 active:border-rose-dark active:bg-white';
             } else if (isSelected && (question.anyAnswerCorrect || isCorrectOption)) {
               buttonClass += 'bg-green-100 border-2 border-green-500 text-green-800';
             } else if (isSelected && !isCorrectOption && !question.anyAnswerCorrect) {
               buttonClass += 'bg-red-100 border-2 border-red-400 text-red-800';
             } else {
               // Don't show correct answer when wrong is selected - keep all other options normal
-              buttonClass += 'bg-white/80 border-2 border-rose-medium/30 text-gray-800 hover:border-rose-dark hover:bg-white';
+              buttonClass += 'bg-white/80 border-2 border-rose-medium/30 text-gray-800';
             }
 
             return (

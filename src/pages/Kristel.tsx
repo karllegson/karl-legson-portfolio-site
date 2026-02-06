@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import '@/components/kristel/kristel-transitions.css';
+import { resumeAudio, playTransition, playSuccess, playCelebration } from '@/components/kristel/kristelSounds';
 import LockScreen from '@/components/kristel/LockScreen';
 import WelcomeScreen from '@/components/kristel/WelcomeScreen';
 import ContextScreen from '@/components/kristel/ContextScreen';
@@ -15,7 +16,7 @@ import EmptyMemoryScreen from '@/components/kristel/EmptyMemoryScreen';
 import ConfirmationScreen from '@/components/kristel/ConfirmationScreen';
 import CountdownScreen from '@/components/kristel/CountdownScreen';
 import { quizQuestions } from '@/components/kristel/quizData';
-import { saveKristelRun, markKristelCompleted } from '@/lib/kristel-run';
+import { saveKristelRun, markKristelCompleted, hasKristelCompleted } from '@/lib/kristel-run';
 
 type Screen =
   | 'lock'
@@ -37,13 +38,18 @@ type Screen =
   | 'countdown';
 
 const Kristel = () => {
-  const [currentScreen, setCurrentScreen] = useState<Screen>('lock');
+  // If user already completed the flow, skip straight to countdown
+  const [currentScreen, setCurrentScreen] = useState<Screen>(
+    hasKristelCompleted() ? 'countdown' : 'lock'
+  );
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const transitionTo = (screen: Screen) => {
+    resumeAudio();
+    playTransition();
     setIsTransitioning(true);
     setTimeout(() => {
       setCurrentScreen(screen);
@@ -52,6 +58,7 @@ const Kristel = () => {
   };
 
   const handleUnlock = () => {
+    playSuccess();
     transitionTo('welcome');
   };
 
@@ -69,13 +76,19 @@ const Kristel = () => {
         setCurrentQuestion(currentQuestion + 1);
       }, 2000);
     } else {
+      // Find the food question (index 9) and get her choice
+      const foodQuestionIndex = quizQuestions.findIndex(q => q.anyAnswerCorrect);
+      const foodChoice = foodQuestionIndex !== -1 && nextAnswers[foodQuestionIndex] !== undefined
+        ? quizQuestions[foodQuestionIndex].options[nextAnswers[foodQuestionIndex]]
+        : undefined;
+
       // Final question: persist the run (fire-and-forget)
       void saveKristelRun({
         score: score + 1,
         total: quizQuestions.length,
         answers: nextAnswers,
+        foodChoice,
       });
-      markKristelCompleted();
 
       setTimeout(() => {
         transitionTo('quiz-result');
@@ -196,9 +209,22 @@ const Kristel = () => {
       case 'invitation':
         return <InvitationScreen onAccept={() => transitionTo('confirmation')} />;
       case 'confirmation':
-        return <ConfirmationScreen onContinue={() => transitionTo('countdown')} />;
+        return <ConfirmationScreen onContinue={() => {
+          markKristelCompleted();
+          transitionTo('countdown');
+        }} />;
       case 'countdown':
-        return <CountdownScreen onContinue={() => transitionTo('music-box')} />;
+        return <CountdownScreen
+          onContinue={() => transitionTo('music-box')}
+          onSecretReset={() => {
+            // Clear completion flag and restart from the beginning
+            localStorage.removeItem('kristel_run_completed');
+            setCurrentScreen('lock');
+            setCurrentQuestion(0);
+            setScore(0);
+            setAnswers([]);
+          }}
+        />;
       default:
         return <LockScreen onUnlock={handleUnlock} />;
     }
@@ -214,14 +240,6 @@ const Kristel = () => {
         }`}
       >
         {renderScreen()}
-      </div>
-      <div className="fixed bottom-4 right-4 z-50">
-        <button
-          onClick={devSkip}
-          className="px-4 py-2 rounded-lg bg-rose-dark text-white shadow hover:bg-rose-dark/90 transition-colors text-sm"
-        >
-          Skip
-        </button>
       </div>
       <p className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 text-gray-500 text-sm">
         Made with love by your cute bf, just for you.

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Heart } from 'lucide-react';
+import { playEnvelopeOpen, playClick } from './kristelSounds';
 
 interface InvitationScreenProps {
   onAccept: () => void;
@@ -12,10 +13,12 @@ const InvitationScreen = ({ onAccept }: InvitationScreenProps) => {
   const handleToggle = () => {
     if (!isOpen) {
       // Opening
+      playEnvelopeOpen();
       setIsOpen(true);
       setTimeout(() => setCardRevealed(true), 700);
     } else {
       // Closing
+      playClick();
       setCardRevealed(false);
       setTimeout(() => setIsOpen(false), 300);
     }

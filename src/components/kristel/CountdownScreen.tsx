@@ -10,9 +10,11 @@ interface TimeLeft {
 
 interface CountdownScreenProps {
   onContinue: () => void;
+  onSecretReset?: () => void;
 }
 
-const CountdownScreen = ({ onContinue }: CountdownScreenProps) => {
+const CountdownScreen = ({ onContinue, onSecretReset }: CountdownScreenProps) => {
+  const [secretTaps, setSecretTaps] = useState(0);
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,
     hours: 0,
@@ -96,7 +98,17 @@ const CountdownScreen = ({ onContinue }: CountdownScreenProps) => {
             Open your surprise
           </button>
         ) : (
-          <div className="mt-12 flex justify-center gap-1">
+          <div
+            className="mt-12 flex justify-center gap-1 cursor-default select-none"
+            onClick={() => {
+              const next = secretTaps + 1;
+              if (next >= 3 && onSecretReset) {
+                onSecretReset();
+              } else {
+                setSecretTaps(next);
+              }
+            }}
+          >
             {[...Array(3)].map((_, i) => (
               <Heart
                 key={i}

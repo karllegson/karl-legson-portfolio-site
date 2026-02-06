@@ -1,8 +1,14 @@
+import { useEffect } from 'react';
+import { playCelebration } from './kristelSounds';
+
 interface CelebrationScreenProps {
   onContinue: () => void;
 }
 
 const CelebrationScreen = ({ onContinue }: CelebrationScreenProps) => {
+  useEffect(() => {
+    playCelebration();
+  }, []);
   return (
     <div className="kristel-screen kristel-screen-celebration min-h-screen flex items-center justify-center px-6">
       <div className="w-full max-w-[420px] text-center">

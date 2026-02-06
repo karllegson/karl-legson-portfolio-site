@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react';
+import { resumeAudio, playClick, playSuccess, playWrong } from './kristelSounds';
 
 interface LockScreenProps {
   onUnlock: () => void;
@@ -34,11 +35,14 @@ const LockScreen = ({ onUnlock }: LockScreenProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    resumeAudio();
     if (code === correctCode) {
+      playSuccess();
       setIsUnlocking(true);
       setWrongHamsterIndex(null);
       setTimeout(onUnlock, 2000);
     } else {
+      playWrong();
       setError('Hmmm.. Try again baber');
       setCode('');
       const randomIndex = Math.floor(Math.random() * 3);

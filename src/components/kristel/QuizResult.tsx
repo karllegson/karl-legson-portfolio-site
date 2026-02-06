@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { Heart } from 'lucide-react';
+import { playCelebration } from './kristelSounds';
 
 interface QuizResultProps {
   score: number;
@@ -7,6 +9,10 @@ interface QuizResultProps {
 }
 
 const QuizResult = ({ score, total, onContinue }: QuizResultProps) => {
+  useEffect(() => {
+    playCelebration();
+  }, []);
+
   return (
     <div className="kristel-screen kristel-screen-quiz-result min-h-screen flex items-center justify-center px-6">
       <div className="w-full max-w-[420px] text-center">

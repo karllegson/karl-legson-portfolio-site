@@ -1,4 +1,5 @@
 import { Heart } from 'lucide-react';
+import { playCelebration } from './kristelSounds';
 
 interface ValentineQuestionScreenProps {
   onAccept: () => void;
@@ -53,7 +54,7 @@ const ValentineQuestionScreen = ({ onAccept }: ValentineQuestionScreenProps) => 
 
         <div className="flex gap-4 justify-center">
           <button
-            onClick={onAccept}
+            onClick={() => { playCelebration(); onAccept(); }}
             className="px-8 py-4 bg-rose-dark text-white rounded-xl font-medium text-lg hover:bg-rose-dark/90 transition-colors shadow-lg flex items-center gap-2"
           >
             Yes! <Heart className="w-5 h-5 fill-white" />
