@@ -42,9 +42,9 @@ export const quizQuestions: QuizQuestion[] = [
     question: "What's my favorite car?",
     options: [
       "Porsche 911",      // Option 0 - mark as correct
-      "Tesla Model S",
+      "Tesla Model Why",
       "BMW M4",
-      "Any car as long as you're in it"
+      "Audi Q5"
     ],
     correctIndex: 0,
   },
@@ -79,7 +79,7 @@ export const quizQuestions: QuizQuestion[] = [
     correctIndex: 2,
   },
   {
-    question: "What do I love most about you?",
+    question: "What do I love about you?",
     options: [
       "Everything",      // Option 0 - mark as correct
       "Your smile",

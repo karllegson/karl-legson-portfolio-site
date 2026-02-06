@@ -37,32 +37,62 @@ type Screen =
   | 'confirmation'
   | 'countdown';
 
-// Screens that are safe to resume from (not mid-quiz)
-const RESUMABLE_SCREENS: Screen[] = [
-  'welcome', 'context', 'quiz-intro', 'quiz-result',
-  'memory-2022', 'memory-2023', 'memory-2024', 'memory-2025',
-  'empty-memory', 'valentine-question', 'celebration',
-  'invitation', 'confirmation', 'countdown', 'music-box',
-];
+const STORAGE_KEY = 'kristel_progress';
 
-const getInitialScreen = (): Screen => {
-  if (hasKristelCompleted()) return 'countdown';
-  const saved = localStorage.getItem('kristel_current_screen') as Screen | null;
-  if (saved && RESUMABLE_SCREENS.includes(saved)) return saved;
-  return 'lock';
+interface KristelProgress {
+  screen: Screen;
+  currentQuestion: number;
+  score: number;
+  answers: number[];
+}
+
+const saveProgress = (progress: KristelProgress) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+  } catch { /* silent */ }
+};
+
+const loadProgress = (): KristelProgress | null => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw) as KristelProgress;
+  } catch {
+    return null;
+  }
+};
+
+const clearProgress = () => {
+  localStorage.removeItem(STORAGE_KEY);
+};
+
+const getInitialState = (): KristelProgress => {
+  if (hasKristelCompleted()) {
+    return { screen: 'countdown', currentQuestion: 0, score: 0, answers: [] };
+  }
+  const saved = loadProgress();
+  if (saved && saved.screen !== 'lock') {
+    // If they were mid-quiz, resume at quiz-intro so they restart the quiz cleanly
+    if (saved.screen === 'quiz') {
+      return { ...saved, screen: 'quiz-intro', currentQuestion: 0, score: 0, answers: [] };
+    }
+    return saved;
+  }
+  return { screen: 'lock', currentQuestion: 0, score: 0, answers: [] };
 };
 
 const Kristel = () => {
-  const [currentScreen, setCurrentScreen] = useState<Screen>(getInitialScreen);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [score, setScore] = useState(0);
-  const [answers, setAnswers] = useState<number[]>([]);
+  const initial = getInitialState();
+  const [currentScreen, setCurrentScreen] = useState<Screen>(initial.screen);
+  const [currentQuestion, setCurrentQuestion] = useState(initial.currentQuestion);
+  const [score, setScore] = useState(initial.score);
+  const [answers, setAnswers] = useState<number[]>(initial.answers);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // Persist current screen to localStorage so it survives iOS backgrounding
+  // Persist all progress to localStorage so it survives iOS Safari killing the page
   useEffect(() => {
-    localStorage.setItem('kristel_current_screen', currentScreen);
-  }, [currentScreen]);
+    saveProgress({ screen: currentScreen, currentQuestion, score, answers });
+  }, [currentScreen, currentQuestion, score, answers]);
 
   const transitionTo = (screen: Screen) => {
     resumeAudio();
@@ -236,7 +266,7 @@ const Kristel = () => {
           onSecretReset={() => {
             // Clear completion flag and restart from the beginning
             localStorage.removeItem('kristel_run_completed');
-            localStorage.removeItem('kristel_current_screen');
+            clearProgress();
             setCurrentScreen('lock');
             setCurrentQuestion(0);
             setScore(0);
