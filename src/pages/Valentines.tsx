@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Heart, Share, Plus, X } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import '@/components/kristel/kristel-transitions.css';
 import MusicBox from '@/components/kristel/MusicBox';
-import { hasKristelCompleted } from '@/lib/kristel-run';
 
 interface TimeLeft {
   days: number;
@@ -29,7 +27,6 @@ const isStandalone = () => {
 };
 
 const Valentines = () => {
-  const navigate = useNavigate();
   const [secretTaps, setSecretTaps] = useState(0);
   const [showMusicBox, setShowMusicBox] = useState(false);
   const [showA2HS, setShowA2HS] = useState(false);
@@ -41,12 +38,7 @@ const Valentines = () => {
   });
   const [isUnlocked, setIsUnlocked] = useState(false);
 
-  // Redirect to /kristel if flow not completed yet
-  useEffect(() => {
-    if (!hasKristelCompleted()) {
-      navigate('/kristel', { replace: true });
-    }
-  }, [navigate]);
+  // No redirect — allow direct access so the page works from home screen bookmarks
 
   // Show "Add to Home Screen" popup (only on iOS Safari, not already standalone, not dismissed)
   useEffect(() => {
@@ -93,7 +85,7 @@ const Valentines = () => {
   const handleSecretReset = () => {
     localStorage.removeItem('kristel_run_completed');
     localStorage.removeItem('kristel_progress');
-    navigate('/kristel', { replace: true });
+    window.location.href = '/kristel';
   };
 
   const TimeBlock = ({ value, label }: { value: number; label: string }) => (
