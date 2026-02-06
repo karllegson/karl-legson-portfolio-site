@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Heart } from 'lucide-react';
 
 interface MusicBoxProps {
-  onContinue: () => void;
+  onContinue?: () => void;
 }
 
 interface NotePlayer {

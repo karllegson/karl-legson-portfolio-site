@@ -1,20 +1,19 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '@/components/kristel/kristel-transitions.css';
-import { resumeAudio, playTransition, playSuccess, playCelebration } from '@/components/kristel/kristelSounds';
+import { resumeAudio, playTransition, playSuccess } from '@/components/kristel/kristelSounds';
 import LockScreen from '@/components/kristel/LockScreen';
 import WelcomeScreen from '@/components/kristel/WelcomeScreen';
 import ContextScreen from '@/components/kristel/ContextScreen';
 import QuizIntro from '@/components/kristel/QuizIntro';
 import QuizQuestion from '@/components/kristel/QuizQuestion';
 import QuizResult from '@/components/kristel/QuizResult';
-import MusicBox from '@/components/kristel/MusicBox';
 import InvitationScreen from '@/components/kristel/InvitationScreen';
 import ValentineQuestionScreen from '@/components/kristel/ValentineQuestionScreen';
 import CelebrationScreen from '@/components/kristel/CelebrationScreen';
 import ValentineMemoryScreen from '@/components/kristel/ValentineMemoryScreen';
 import EmptyMemoryScreen from '@/components/kristel/EmptyMemoryScreen';
 import ConfirmationScreen from '@/components/kristel/ConfirmationScreen';
-import CountdownScreen from '@/components/kristel/CountdownScreen';
 import { quizQuestions } from '@/components/kristel/quizData';
 import { saveKristelRun, markKristelCompleted, hasKristelCompleted } from '@/lib/kristel-run';
 
@@ -30,12 +29,10 @@ type Screen =
   | 'memory-2024'
   | 'memory-2025'
   | 'empty-memory'
-  | 'music-box'
   | 'valentine-question'
   | 'celebration'
   | 'invitation'
-  | 'confirmation'
-  | 'countdown';
+  | 'confirmation';
 
 const STORAGE_KEY = 'kristel_progress';
 
@@ -67,9 +64,6 @@ const clearProgress = () => {
 };
 
 const getInitialState = (): KristelProgress => {
-  if (hasKristelCompleted()) {
-    return { screen: 'countdown', currentQuestion: 0, score: 0, answers: [] };
-  }
   const saved = loadProgress();
   if (saved && saved.screen !== 'lock') {
     // If they were mid-quiz, resume at quiz-intro so they restart the quiz cleanly
@@ -82,12 +76,20 @@ const getInitialState = (): KristelProgress => {
 };
 
 const Kristel = () => {
+  const navigate = useNavigate();
   const initial = getInitialState();
   const [currentScreen, setCurrentScreen] = useState<Screen>(initial.screen);
   const [currentQuestion, setCurrentQuestion] = useState(initial.currentQuestion);
   const [score, setScore] = useState(initial.score);
   const [answers, setAnswers] = useState<number[]>(initial.answers);
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // If the flow is already completed, redirect to /valentines
+  useEffect(() => {
+    if (hasKristelCompleted()) {
+      navigate('/valentines', { replace: true });
+    }
+  }, [navigate]);
 
   // Persist all progress to localStorage so it survives iOS Safari killing the page
   useEffect(() => {
@@ -141,40 +143,6 @@ const Kristel = () => {
         transitionTo('quiz-result');
       }, 2000);
     }
-  };
-
-  const devSkip = () => {
-    const order: Screen[] = [
-      'lock',
-      'welcome',
-      'context',
-      'quiz-intro',
-      'quiz',
-      'quiz-result',
-      'memory-2022',
-      'memory-2023',
-      'memory-2024',
-      'memory-2025',
-      'empty-memory',
-      'valentine-question',
-      'celebration',
-      'invitation',
-      'confirmation',
-      'countdown',
-      'music-box',
-    ];
-    const idx = order.indexOf(currentScreen);
-    if (idx === -1 || idx === order.length - 1) return;
-
-    // Reset quiz state when jumping past quiz intro
-    if (order[idx] === 'quiz-intro') {
-      setCurrentQuestion(0);
-      setAnswers([]);
-      setScore(0);
-    }
-
-    const next = order[idx + 1];
-    transitionTo(next);
   };
 
   const renderScreen = () => {
@@ -247,8 +215,6 @@ const Kristel = () => {
             onContinue={() => transitionTo('valentine-question')}
           />
         );
-      case 'music-box':
-        return <MusicBox onContinue={() => transitionTo('valentine-question')} />;
       case 'valentine-question':
         return <ValentineQuestionScreen onAccept={() => transitionTo('celebration')} />;
       case 'celebration':
@@ -258,21 +224,9 @@ const Kristel = () => {
       case 'confirmation':
         return <ConfirmationScreen onContinue={() => {
           markKristelCompleted();
-          transitionTo('countdown');
+          clearProgress();
+          navigate('/valentines', { replace: true });
         }} />;
-      case 'countdown':
-        return <CountdownScreen
-          onContinue={() => transitionTo('music-box')}
-          onSecretReset={() => {
-            // Clear completion flag and restart from the beginning
-            localStorage.removeItem('kristel_run_completed');
-            clearProgress();
-            setCurrentScreen('lock');
-            setCurrentQuestion(0);
-            setScore(0);
-            setAnswers([]);
-          }}
-        />;
       default:
         return <LockScreen onUnlock={handleUnlock} />;
     }

@@ -2,6 +2,7 @@ import { RouteObject } from 'react-router-dom';
 import Index from '@/pages/Index';
 import Resume from '@/pages/Resume';
 import Kristel from '@/pages/Kristel';
+import Valentines from '@/pages/Valentines';
 import NotFound from '@/pages/NotFound';
 
 export const routes: RouteObject[] = [
@@ -16,6 +17,10 @@ export const routes: RouteObject[] = [
   {
     path: '/kristel',
     element: <Kristel />,
+  },
+  {
+    path: '/valentines',
+    element: <Valentines />,
   },
   {
     path: '*',
