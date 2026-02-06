@@ -8,6 +8,10 @@ import QuizQuestion from '@/components/kristel/QuizQuestion';
 import QuizResult from '@/components/kristel/QuizResult';
 import MusicBox from '@/components/kristel/MusicBox';
 import InvitationScreen from '@/components/kristel/InvitationScreen';
+import ValentineQuestionScreen from '@/components/kristel/ValentineQuestionScreen';
+import CelebrationScreen from '@/components/kristel/CelebrationScreen';
+import ValentineMemoryScreen from '@/components/kristel/ValentineMemoryScreen';
+import EmptyMemoryScreen from '@/components/kristel/EmptyMemoryScreen';
 import ConfirmationScreen from '@/components/kristel/ConfirmationScreen';
 import CountdownScreen from '@/components/kristel/CountdownScreen';
 import { quizQuestions } from '@/components/kristel/quizData';
@@ -20,13 +24,19 @@ type Screen =
   | 'quiz-intro'
   | 'quiz'
   | 'quiz-result'
+  | 'memory-2022'
+  | 'memory-2023'
+  | 'memory-2024'
+  | 'memory-2025'
+  | 'empty-memory'
   | 'music-box'
+  | 'valentine-question'
+  | 'celebration'
   | 'invitation'
   | 'confirmation'
   | 'countdown';
 
 const Kristel = () => {
-  const isDev = import.meta.env.DEV;
   const [currentScreen, setCurrentScreen] = useState<Screen>('lock');
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
@@ -46,23 +56,22 @@ const Kristel = () => {
   };
 
   const handleQuizAnswer = (isCorrect: boolean, selectedIndex: number) => {
+    // Only proceed if answer is correct
+    if (!isCorrect) return;
+
     const nextAnswers = [...answers];
     nextAnswers[currentQuestion] = selectedIndex;
-
-    if (isCorrect) {
-      setScore(score + 1);
-    }
-
+    setScore(score + 1);
     setAnswers(nextAnswers);
 
     if (currentQuestion < quizQuestions.length - 1) {
       setTimeout(() => {
         setCurrentQuestion(currentQuestion + 1);
-      }, 1500);
+      }, 2000);
     } else {
       // Final question: persist the run (fire-and-forget)
       void saveKristelRun({
-        score: isCorrect ? score + 1 : score,
+        score: score + 1,
         total: quizQuestions.length,
         answers: nextAnswers,
       });
@@ -70,7 +79,7 @@ const Kristel = () => {
 
       setTimeout(() => {
         transitionTo('quiz-result');
-      }, 1500);
+      }, 2000);
     }
   };
 
@@ -82,6 +91,13 @@ const Kristel = () => {
       'quiz-intro',
       'quiz',
       'quiz-result',
+      'memory-2022',
+      'memory-2023',
+      'memory-2024',
+      'memory-2025',
+      'empty-memory',
+      'valentine-question',
+      'celebration',
       'invitation',
       'confirmation',
       'countdown',
@@ -126,11 +142,57 @@ const Kristel = () => {
           <QuizResult
             score={score}
             total={quizQuestions.length}
-            onContinue={() => transitionTo('invitation')}
+            onContinue={() => transitionTo('memory-2022')}
+          />
+        );
+      case 'memory-2022':
+        return (
+          <ValentineMemoryScreen
+            year="2022"
+            imagePath="/kristel-valentine-2022.png"
+            message="Our first Valentine's together"
+            onContinue={() => transitionTo('memory-2023')}
+          />
+        );
+      case 'memory-2023':
+        return (
+          <ValentineMemoryScreen
+            year="2023"
+            imagePath="/kristel-valentine-2023.png"
+            message="Another year of love"
+            onContinue={() => transitionTo('memory-2024')}
+          />
+        );
+      case 'memory-2024':
+        return (
+          <ValentineMemoryScreen
+            year="2024"
+            imagePath={["/kristel-valentine-2024.png", "/kristel-valentine-2024-2.png"]}
+            message="Growing stronger together"
+            onContinue={() => transitionTo('memory-2025')}
+          />
+        );
+      case 'memory-2025':
+        return (
+          <ValentineMemoryScreen
+            year="2025"
+            imagePath={["/kristel-valentine-2025.png", "/kristel-valentine-2025-2.png"]}
+            message="Another beautiful year"
+            onContinue={() => transitionTo('empty-memory')}
+          />
+        );
+      case 'empty-memory':
+        return (
+          <EmptyMemoryScreen
+            onContinue={() => transitionTo('valentine-question')}
           />
         );
       case 'music-box':
-        return <MusicBox onContinue={() => transitionTo('invitation')} />;
+        return <MusicBox onContinue={() => transitionTo('valentine-question')} />;
+      case 'valentine-question':
+        return <ValentineQuestionScreen onAccept={() => transitionTo('celebration')} />;
+      case 'celebration':
+        return <CelebrationScreen onContinue={() => transitionTo('invitation')} />;
       case 'invitation':
         return <InvitationScreen onAccept={() => transitionTo('confirmation')} />;
       case 'confirmation':
@@ -153,16 +215,17 @@ const Kristel = () => {
       >
         {renderScreen()}
       </div>
-      {isDev && (
-        <div className="fixed bottom-4 right-4 z-50">
-          <button
-            onClick={devSkip}
-            className="px-4 py-2 rounded-lg bg-rose-dark text-white shadow hover:bg-rose-dark/90 transition-colors text-sm"
-          >
-            Skip (dev)
-          </button>
-        </div>
-      )}
+      <div className="fixed bottom-4 right-4 z-50">
+        <button
+          onClick={devSkip}
+          className="px-4 py-2 rounded-lg bg-rose-dark text-white shadow hover:bg-rose-dark/90 transition-colors text-sm"
+        >
+          Skip
+        </button>
+      </div>
+      <p className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 text-gray-500 text-sm">
+        Made with love by your cute bf, just for you.
+      </p>
     </div>
   );
 };

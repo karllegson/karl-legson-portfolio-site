@@ -8,17 +8,18 @@ const ContextScreen = ({ onContinue }: ContextScreenProps) => {
   return (
     <div className="kristel-screen kristel-screen-context min-h-screen flex items-center justify-center px-6">
       <div className="w-full max-w-[420px] text-center">
-        <p className="text-xl text-gray-700 leading-relaxed mb-4">
-          This isn't just a website.
-        </p>
+        <div className="mb-6 flex justify-center">
+          <img
+            src="/kristel-context-cat.png"
+            alt="Cute cat"
+            className="w-48 h-48 object-contain rounded-2xl"
+            draggable={false}
+          />
+        </div>
 
-        <p className="text-xl text-gray-700 leading-relaxed mb-2">
-          It's an invitation…
-        </p>
-
-        <p className="text-xl text-gray-700 leading-relaxed mb-12">
-          to something I've been planning for you <Heart className="inline w-5 h-5 text-rose-dark fill-rose-dark" />
-        </p>
+        <h1 className="font-script text-4xl text-gray-800 mb-12">
+          Are you readyyy?
+        </h1>
 
         <button
           onClick={onContinue}

@@ -267,7 +267,7 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
           )}
         </div>
 
-        <audio ref={audioRef} src="/WhenImetu.m4a" preload="auto" />
+        <audio ref={audioRef} src="/WhenIMetU.m4a" preload="auto" />
 
         <button
           onClick={onContinue}

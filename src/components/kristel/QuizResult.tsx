@@ -10,8 +10,13 @@ const QuizResult = ({ score, total, onContinue }: QuizResultProps) => {
   return (
     <div className="kristel-screen kristel-screen-quiz-result min-h-screen flex items-center justify-center px-6">
       <div className="w-full max-w-[420px] text-center">
-        <div className="mb-8">
-          <Heart className="w-16 h-16 mx-auto text-rose-dark fill-rose-dark animate-heart-pulse" />
+        <div className="mb-6 flex justify-center">
+          <img
+            src="/kristel-quiz-passed.png"
+            alt="Perfect score celebration"
+            className="w-52 h-52 object-contain"
+            draggable={false}
+          />
         </div>
 
         <p className="text-xl text-gray-600 mb-2">
@@ -23,7 +28,7 @@ const QuizResult = ({ score, total, onContinue }: QuizResultProps) => {
         </h2>
 
         <p className="text-lg text-gray-500 mb-2">
-          {score} out of {total} correct
+          {score} out of {total} correct, just like you, {score}/{total}
         </p>
 
         <p className="text-xl text-gray-700 mb-12">

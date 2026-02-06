@@ -2,6 +2,7 @@ export interface QuizQuestion {
   question: string;
   options: string[];
   correctIndex: number;
+  anyAnswerCorrect?: boolean; // If true, any selected answer is treated as correct
 }
 
 // EDIT YOUR ANSWERS HERE!
@@ -10,7 +11,7 @@ export const quizQuestions: QuizQuestion[] = [
   {
     question: "What's my favorite color?",
     options: [
-      "[YOUR ANSWER]",      // Option 0 - mark as correct
+      "Navy Blue",      // Option 0 - mark as correct
       "Blue",
       "Red",
       "It changes depending on my mood"
@@ -20,27 +21,27 @@ export const quizQuestions: QuizQuestion[] = [
   {
     question: "What's my favorite food?",
     options: [
-      "Pizza",
-      "[YOUR ANSWER]",      // Option 1 - mark as correct
-      "Sushi",
-      "Anything you cook for me"
+      "Kabsa",
+      "Burrito Bowl",
+      "Pancit Canton",
+      "Hotdog na red"
     ],
-    correctIndex: 1,
+    correctIndex: 1, // Burrito Bowl is the correct answer
   },
   {
     question: "What's my favorite music/artist?",
     options: [
-      "Drake",
-      "Taylor Swift",
-      "[YOUR ANSWER]",      // Option 2 - mark as correct
-      "Whatever's playing when I'm with you"
+      "Sabrina Carpenter",
+      "Role Model",
+      "Gracie Abrams",      // Option 2 - mark as correct
+      "Olivia Rodrigo"
     ],
     correctIndex: 2,
   },
   {
     question: "What's my favorite car?",
     options: [
-      "[YOUR ANSWER]",      // Option 0 - mark as correct
+      "Porsche 911",      // Option 0 - mark as correct
       "Tesla Model S",
       "BMW M4",
       "Any car as long as you're in it"
@@ -50,10 +51,10 @@ export const quizQuestions: QuizQuestion[] = [
   {
     question: "What's our favorite thing to do together?",
     options: [
-      "Watch movies",
-      "Go on adventures",
       "Stay home and cuddle",
-      "[YOUR ANSWER]"       // Option 3 - mark as correct
+      "Go on Concert Dates",
+      "Write....",
+      "All of the above"       // Option 3 - mark as correct
     ],
     correctIndex: 3,
   },
@@ -63,7 +64,7 @@ export const quizQuestions: QuizQuestion[] = [
       "February 14",
       "December 25",
       "September 12",       // Option 2 - the correct answer!
-      "Every day with you"
+      "July 7"
     ],
     correctIndex: 2,
   },
@@ -71,41 +72,44 @@ export const quizQuestions: QuizQuestion[] = [
     question: "What's my favorite place to be?",
     options: [
       "At the beach",
-      "In the mountains",
-      "[YOUR ANSWER]",      // Option 2 - mark as correct
-      "Anywhere with you"
+      "Concerts",
+      "Anywhere with you",      // Option 2 - mark as correct
+      "Billiards/Pool Hall"
     ],
     correctIndex: 2,
   },
   {
     question: "What do I love most about you?",
     options: [
-      "[YOUR ANSWER]",      // Option 0 - mark as correct
+      "Everything",      // Option 0 - mark as correct
       "Your smile",
       "Your laugh",
-      "Everything"
+      "Your jokes"
     ],
     correctIndex: 0,
   },
   {
     question: "What's my favorite season?",
     options: [
-      "Summer",
-      "[YOUR ANSWER]",      // Option 1 - mark as correct
+      "Spring",
+      "Summer",      // Option 1 - mark as correct
       "Fall",
       "Winter"
     ],
     correctIndex: 1,
   },
   {
-    question: "What's the best gift you've ever given me?",
+    question: "Which foood do you like more on a special occasion?",
     options: [
-      "Something expensive",
-      "A surprise trip",
-      "Your time",
-      "[YOUR ANSWER]"       // Option 3 - mark as correct
+      "Italian food",
+      "Thai food",
+      "Japanese food",
+      "Vietnamese food",
+      "American food",
+      "Chinese food"
     ],
-    correctIndex: 3,
+    correctIndex: 0, // Not used when anyAnswerCorrect is true
+    anyAnswerCorrect: true, // Any answer is correct!
   },
 ];
 
@@ -114,7 +118,7 @@ export const correctFeedback = [
   "Exactly right! You're amazing",
   "Perfect! I knew you'd get it",
   "Yes! You know me so well",
-  "That's my girl!",
+  "That's my baber!",
   "Aww you remembered",
   "You really do pay attention",
   "That's so sweet of you to say",
@@ -123,7 +127,7 @@ export const correctFeedback = [
 ];
 
 export const wrongFeedback = [
-  "Still cute. I'll allow it",
+  "Still cute.",
   "Close enough, my love",
   "Hmm not quite, but I still love you",
   "That's okay, you're still perfect",

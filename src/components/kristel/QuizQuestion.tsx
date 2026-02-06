@@ -21,25 +21,40 @@ const QuizQuestion = ({
   const [happyHamsterIndex, setHappyHamsterIndex] = useState<number | null>(null);
 
   const handleSelect = (index: number) => {
-    if (selectedIndex !== null) return;
+    // If already answered correctly, don't allow more clicks
+    if (selectedIndex !== null && (question.anyAnswerCorrect || selectedIndex === question.correctIndex)) return;
 
-    setSelectedIndex(index);
-    const isCorrect = index === question.correctIndex;
+    // If anyAnswerCorrect is true, any answer is correct
+    const isCorrect = question.anyAnswerCorrect ? true : index === question.correctIndex;
+    
     if (!isCorrect) {
+      // Wrong answer: show sad hamster, reset after a moment so they can try again
       const randomIndex = Math.floor(Math.random() * 3);
       setSadHamsterIndex(randomIndex);
       setHappyHamsterIndex(null);
+      setSelectedIndex(index);
+      setShowFeedback(true);
+      
+      // Reset after showing feedback so they can try again
+      setTimeout(() => {
+        setSelectedIndex(null);
+        setShowFeedback(false);
+        setSadHamsterIndex(null);
+      }, 2000);
     } else {
+      // Correct answer: show happy hamster and proceed
       setSadHamsterIndex(null);
       const randomIndex = Math.floor(Math.random() * 6);
       setHappyHamsterIndex(randomIndex);
+      setSelectedIndex(index);
+      setShowFeedback(true);
+      onAnswer(true, index);
     }
-
-    setShowFeedback(true);
-    onAnswer(isCorrect, index);
   };
 
-  const isCorrect = selectedIndex === question.correctIndex;
+  const isCorrect = question.anyAnswerCorrect 
+    ? (selectedIndex !== null) 
+    : (selectedIndex === question.correctIndex);
   const feedbackMessage = isCorrect
     ? correctFeedback[questionNumber - 1] || correctFeedback[0]
     : wrongFeedback[questionNumber - 1] || wrongFeedback[0];
@@ -66,35 +81,32 @@ const QuizQuestion = ({
 
             if (!showResult) {
               buttonClass += 'bg-white/80 border-2 border-rose-medium/30 text-gray-800 hover:border-rose-dark hover:bg-white';
-            } else if (isSelected && isCorrectOption) {
+            } else if (isSelected && (question.anyAnswerCorrect || isCorrectOption)) {
               buttonClass += 'bg-green-100 border-2 border-green-500 text-green-800';
-            } else if (isSelected && !isCorrectOption) {
+            } else if (isSelected && !isCorrectOption && !question.anyAnswerCorrect) {
               buttonClass += 'bg-red-100 border-2 border-red-400 text-red-800';
-            } else if (isCorrectOption) {
-              buttonClass += 'bg-green-50 border-2 border-green-300 text-green-700';
             } else {
-              buttonClass += 'bg-white/50 border-2 border-gray-200 text-gray-400';
+              // Don't show correct answer when wrong is selected - keep all other options normal
+              buttonClass += 'bg-white/80 border-2 border-rose-medium/30 text-gray-800 hover:border-rose-dark hover:bg-white';
             }
 
             return (
               <button
                 key={index}
                 onClick={() => handleSelect(index)}
-                disabled={selectedIndex !== null}
+                disabled={selectedIndex !== null && (question.anyAnswerCorrect || selectedIndex === question.correctIndex)}
                 className={buttonClass}
               >
                 <span className="flex items-center justify-between">
                   {option}
                   {showResult && isSelected && (
-                    isCorrectOption ? (
+                    (question.anyAnswerCorrect || isCorrectOption) ? (
                       <Check className="w-5 h-5 text-green-600" />
                     ) : (
                       <X className="w-5 h-5 text-red-500" />
                     )
                   )}
-                  {showResult && !isSelected && isCorrectOption && (
-                    <Check className="w-5 h-5 text-green-500" />
-                  )}
+                  {/* Don't show checkmark on correct answer when wrong is selected */}
                 </span>
               </button>
             );

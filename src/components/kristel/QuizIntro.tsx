@@ -6,12 +6,16 @@ const QuizIntro = ({ onStart }: QuizIntroProps) => {
   return (
     <div className="kristel-screen kristel-screen-quiz-intro min-h-screen flex items-center justify-center px-6">
       <div className="w-full max-w-[420px] text-center">
-        <p className="text-xl text-gray-700 leading-relaxed mb-4">
-          Before you're officially invited…
-        </p>
-
+        <div className="mb-6 flex justify-center">
+          <img
+            src="/kristel-quiz-intro-cat.png"
+            alt="Cute cat"
+            className="w-48 h-48 object-contain rounded-2xl"
+            draggable={false}
+          />
+        </div>
         <p className="text-2xl text-gray-800 font-medium mb-12">
-          Let's see how well you know me
+          First, let me see how well you know me...
         </p>
 
         <button
