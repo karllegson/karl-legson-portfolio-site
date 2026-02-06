@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '@/components/kristel/kristel-transitions.css';
 import { resumeAudio, playTransition, playSuccess, playCelebration } from '@/components/kristel/kristelSounds';
 import LockScreen from '@/components/kristel/LockScreen';
@@ -37,15 +37,32 @@ type Screen =
   | 'confirmation'
   | 'countdown';
 
+// Screens that are safe to resume from (not mid-quiz)
+const RESUMABLE_SCREENS: Screen[] = [
+  'welcome', 'context', 'quiz-intro', 'quiz-result',
+  'memory-2022', 'memory-2023', 'memory-2024', 'memory-2025',
+  'empty-memory', 'valentine-question', 'celebration',
+  'invitation', 'confirmation', 'countdown', 'music-box',
+];
+
+const getInitialScreen = (): Screen => {
+  if (hasKristelCompleted()) return 'countdown';
+  const saved = localStorage.getItem('kristel_current_screen') as Screen | null;
+  if (saved && RESUMABLE_SCREENS.includes(saved)) return saved;
+  return 'lock';
+};
+
 const Kristel = () => {
-  // If user already completed the flow, skip straight to countdown
-  const [currentScreen, setCurrentScreen] = useState<Screen>(
-    hasKristelCompleted() ? 'countdown' : 'lock'
-  );
+  const [currentScreen, setCurrentScreen] = useState<Screen>(getInitialScreen);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Persist current screen to localStorage so it survives iOS backgrounding
+  useEffect(() => {
+    localStorage.setItem('kristel_current_screen', currentScreen);
+  }, [currentScreen]);
 
   const transitionTo = (screen: Screen) => {
     resumeAudio();
@@ -219,6 +236,7 @@ const Kristel = () => {
           onSecretReset={() => {
             // Clear completion flag and restart from the beginning
             localStorage.removeItem('kristel_run_completed');
+            localStorage.removeItem('kristel_current_screen');
             setCurrentScreen('lock');
             setCurrentQuestion(0);
             setScore(0);
@@ -241,7 +259,7 @@ const Kristel = () => {
       >
         {renderScreen()}
       </div>
-      <p className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 text-gray-500 text-sm">
+      <p className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 text-gray-500 text-xs whitespace-nowrap">
         Made with love by your cute bf, just for you.
       </p>
     </div>
