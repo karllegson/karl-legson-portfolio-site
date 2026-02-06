@@ -31,10 +31,10 @@ export const quizQuestions: QuizQuestion[] = [
   {
     question: "What's my favorite music/artist?",
     options: [
-      "Sabrina Carpenter",
+      "Gracie Abrams",
       "Role Model",
-      "Gracie Abrams",      // Option 2 - mark as correct
-      "Olivia Rodrigo"
+      "All of the above",      // Option 2 - mark as correct
+      "Adie"
     ],
     correctIndex: 2,
   },
