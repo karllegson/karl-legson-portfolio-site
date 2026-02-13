@@ -1,10 +1,15 @@
+import { useEffect } from 'react';
 import { Heart } from 'lucide-react';
+import { playClick, playTransition } from './kristelSounds';
 
 interface ContextScreenProps {
   onContinue: () => void;
 }
 
 const ContextScreen = ({ onContinue }: ContextScreenProps) => {
+  useEffect(() => {
+    playTransition();
+  }, []);
   return (
     <div className="kristel-screen kristel-screen-context min-h-screen flex items-center justify-center px-6">
       <div className="w-full max-w-[420px] text-center">
@@ -22,7 +27,7 @@ const ContextScreen = ({ onContinue }: ContextScreenProps) => {
         </h1>
 
         <button
-          onClick={onContinue}
+          onClick={() => { playClick(); onContinue(); }}
           className="w-full py-4 bg-rose-dark text-white rounded-xl font-medium text-lg hover:bg-rose-dark/90 transition-colors"
         >
           Continue

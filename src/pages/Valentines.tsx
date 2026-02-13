@@ -1,7 +1,13 @@
 import { useEffect, useState, useRef } from 'react';
 import { Heart, Share, Plus, X } from 'lucide-react';
+import confetti from 'canvas-confetti';
+import { resumeAudio, playSuccess, playCelebration } from '@/components/kristel/kristelSounds';
 import '@/components/kristel/kristel-transitions.css';
 import MusicBox from '@/components/kristel/MusicBox';
+import ValentineLetterScreen from '@/components/kristel/ValentineLetterScreen';
+import ReadyForGiftScreen from '@/components/kristel/ReadyForGiftScreen';
+import WaitTheresMoreScreen from '@/components/kristel/WaitTheresMoreScreen';
+import ScratchToRevealScreen from '@/components/kristel/ScratchToRevealScreen';
 
 interface TimeLeft {
   days: number;
@@ -28,8 +34,13 @@ const isStandalone = () => {
 
 const Valentines = () => {
   const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const bypassUnlockedRef = useRef(false);
   const [secretTaps, setSecretTaps] = useState(0);
+  const [showLetter, setShowLetter] = useState(false);
+  const [showReadyForGift, setShowReadyForGift] = useState(false);
   const [showMusicBox, setShowMusicBox] = useState(false);
+  const [showWaitTheresMore, setShowWaitTheresMore] = useState(false);
+  const [showScratchReveal, setShowScratchReveal] = useState(false);
   const [showA2HS, setShowA2HS] = useState(false);
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,
@@ -51,11 +62,17 @@ const Valentines = () => {
     }
   }, []);
 
-  // Countdown timer
+  // Countdown timer (skips resetting when user used 7-sec hold bypass)
   useEffect(() => {
     const targetDate = new Date('2026-02-14T18:00:00');
 
     const calculateTimeLeft = () => {
+      if (bypassUnlockedRef.current) {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        setIsUnlocked(true);
+        return;
+      }
+
       const now = new Date();
       const difference = targetDate.getTime() - now.getTime();
 
@@ -78,6 +95,46 @@ const Valentines = () => {
     return () => clearInterval(timer);
   }, []);
 
+  // Confetti + celebration when timer unlocks
+  useEffect(() => {
+    if (!isUnlocked) return;
+    resumeAudio();
+    playCelebration();
+
+    const colors = ['#e11d48', '#fb7185', '#f9a8d4', '#fda4af', '#fecdd3', '#fbbf24'];
+    const duration = 3000;
+    const end = Date.now() + duration;
+
+    const frame = () => {
+      confetti({
+        particleCount: 3,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0.2, y: 0.6 },
+        colors,
+      });
+      confetti({
+        particleCount: 3,
+        angle: 120,
+        spread: 55,
+        origin: { x: 0.8, y: 0.6 },
+        colors,
+      });
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    };
+    frame();
+
+    // Single big burst from center
+    confetti({
+      particleCount: 80,
+      spread: 100,
+      origin: { x: 0.5, y: 0.5 },
+      colors,
+    });
+  }, [isUnlocked]);
+
   const clearHoldTimer = () => {
     if (holdTimerRef.current) {
       clearTimeout(holdTimerRef.current);
@@ -89,6 +146,7 @@ const Valentines = () => {
     clearHoldTimer();
     holdTimerRef.current = setTimeout(() => {
       holdTimerRef.current = null;
+      bypassUnlockedRef.current = true;
       setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
       setIsUnlocked(true);
     }, 7000);
@@ -126,10 +184,72 @@ const Valentines = () => {
     </div>
   );
 
+  if (showLetter) {
+    return (
+      <div className="kristel-page min-h-screen bg-gradient-to-br from-rose-soft via-cream to-rose-soft overflow-hidden">
+        <ValentineLetterScreen
+          onContinue={() => {
+            setShowLetter(false);
+            setShowReadyForGift(true);
+          }}
+        />
+        <p className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 text-gray-500 text-xs whitespace-nowrap">
+          Made with love by your cute bf, just for you.
+        </p>
+      </div>
+    );
+  }
+
+  if (showReadyForGift) {
+    return (
+      <div className="kristel-page min-h-screen bg-gradient-to-br from-rose-soft via-cream to-rose-soft overflow-hidden">
+        <ReadyForGiftScreen
+          onContinue={() => {
+            setShowReadyForGift(false);
+            setShowMusicBox(true);
+          }}
+        />
+        <p className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 text-gray-500 text-xs whitespace-nowrap">
+          Made with love by your cute bf, just for you.
+        </p>
+      </div>
+    );
+  }
+
+  if (showScratchReveal) {
+    return (
+      <div className="kristel-page min-h-screen bg-gradient-to-br from-rose-soft via-cream to-rose-soft overflow-hidden">
+        <ScratchToRevealScreen onContinue={() => setShowScratchReveal(false)} />
+        <p className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 text-gray-500 text-xs whitespace-nowrap">
+          Made with love by your cute bf, just for you.
+        </p>
+      </div>
+    );
+  }
+
+  if (showWaitTheresMore) {
+    return (
+      <div className="kristel-page min-h-screen bg-gradient-to-br from-rose-soft via-cream to-rose-soft overflow-hidden">
+        <WaitTheresMoreScreen
+          onContinue={() => {
+            setShowWaitTheresMore(false);
+            setShowScratchReveal(true);
+          }}
+        />
+        <p className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 text-gray-500 text-xs whitespace-nowrap">
+          Made with love by your cute bf, just for you.
+        </p>
+      </div>
+    );
+  }
+
   if (showMusicBox) {
     return (
       <div className="kristel-page min-h-screen bg-gradient-to-br from-rose-soft via-cream to-rose-soft overflow-hidden">
-        <MusicBox />
+        <MusicBox onContinue={() => {
+          setShowMusicBox(false);
+          setShowWaitTheresMore(true);
+        }} />
         <p className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 text-gray-500 text-xs whitespace-nowrap">
           Made with love by your cute bf, just for you.
         </p>
@@ -167,12 +287,18 @@ const Valentines = () => {
           </p>
 
           {isUnlocked ? (
-            <button
-              onClick={() => setShowMusicBox(true)}
-              className="mt-10 inline-flex items-center justify-center px-6 py-3 rounded-xl bg-rose-dark text-white font-semibold text-lg shadow-lg active:bg-rose-dark/90 transition-colors"
-            >
-              Open your surprise
-            </button>
+            <div className="valentines-unlock-celebration">
+              <button
+                onClick={() => {
+                  resumeAudio();
+                  playSuccess();
+                  setShowLetter(true);
+                }}
+                className="mt-10 inline-flex items-center justify-center px-6 py-3 rounded-xl bg-rose-dark text-white font-semibold text-lg shadow-lg active:bg-rose-dark/90 transition-colors"
+              >
+                Open your surprise
+              </button>
+            </div>
           ) : (
             <div
               className="mt-12 flex justify-center gap-1 cursor-default select-none"

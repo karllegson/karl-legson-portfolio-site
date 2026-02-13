@@ -81,6 +81,7 @@ export default {
 				sans: ['Inter var', 'Inter', 'sans-serif'],
 				mono: ['JetBrains Mono', 'monospace'],
 				script: ['Dancing Script', 'cursive'],
+				serif: ['Lora', 'Georgia', 'serif'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

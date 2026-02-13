@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Heart } from 'lucide-react';
+import { playClick, playCelebration } from './kristelSounds';
 
 interface ConfirmationScreenProps {
   onContinue: () => void;
@@ -17,6 +18,7 @@ const ConfirmationScreen = ({ onContinue }: ConfirmationScreenProps) => {
   const [confetti, setConfetti] = useState<Confetti[]>([]);
 
   useEffect(() => {
+    playCelebration();
     const colors = ['#e11d48', '#f9a8ba', '#fdf2f4', '#ff6b6b', '#ffc0cb'];
     const newConfetti: Confetti[] = [];
 
@@ -72,7 +74,7 @@ const ConfirmationScreen = ({ onContinue }: ConfirmationScreenProps) => {
         </p>
 
         <button
-          onClick={onContinue}
+          onClick={() => { playClick(); onContinue(); }}
           className="w-full py-4 bg-rose-dark text-white rounded-xl font-medium text-lg hover:bg-rose-dark/90 transition-colors"
         >
           Continue

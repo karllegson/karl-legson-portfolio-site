@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Heart } from 'lucide-react';
+import { playTransition } from './kristelSounds';
 
 interface MusicBoxProps {
   onContinue?: () => void;
@@ -80,6 +81,7 @@ const getPointerAngle = (e: React.PointerEvent) => {
 const MusicBox = ({ onContinue }: MusicBoxProps) => {
   const [angle, setAngle] = useState(0);
   const [isTurning, setIsTurning] = useState(false);
+  const [canClickContinue, setCanClickContinue] = useState(false);
   const playerRef = useRef<NotePlayer | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const draggingRef = useRef(false);
@@ -97,6 +99,10 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
   );
 
   useEffect(() => {
+    playTransition();
+  }, []);
+
+  useEffect(() => {
     playerRef.current = createNotePlayer();
     return () => {
       playerRef.current?.stop();
@@ -105,6 +111,12 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!onContinue) return;
+    const t = setTimeout(() => setCanClickContinue(true), 5000);
+    return () => clearTimeout(t);
+  }, []); // run once on mount; onContinue can change every parent render
 
   const handlePointerDown = (e: React.PointerEvent) => {
     draggingRef.current = true;
@@ -269,12 +281,19 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
 
         <audio ref={audioRef} src="/WhenIMetU.m4a" preload="auto" />
 
-        <button
-          onClick={onContinue}
-          className="w-full py-4 bg-rose-dark text-white rounded-xl font-medium text-lg hover:bg-rose-dark/90 transition-colors shadow-lg"
-        >
-          Continue
-        </button>
+        {onContinue && (
+          <button
+            onClick={canClickContinue ? onContinue : undefined}
+            disabled={!canClickContinue}
+            className={`w-full py-4 rounded-xl font-medium text-lg shadow-lg transition-colors ${
+              canClickContinue
+                ? 'bg-rose-dark text-white hover:bg-rose-dark/90 active:bg-rose-dark/90'
+                : 'bg-rose-dark/50 text-white/80 cursor-not-allowed'
+            }`}
+          >
+            Continue
+          </button>
+        )}
       </div>
     </div>
   );

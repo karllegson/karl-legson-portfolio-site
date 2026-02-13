@@ -1,4 +1,5 @@
 import { Heart } from 'lucide-react';
+import { playClick } from './kristelSounds';
 
 interface EmptyMemoryScreenProps {
   onContinue: () => void;
@@ -27,7 +28,7 @@ const EmptyMemoryScreen = ({ onContinue }: EmptyMemoryScreenProps) => {
         </p>
 
         <button
-          onClick={onContinue}
+          onClick={() => { playClick(); onContinue(); }}
           className="w-full py-4 bg-rose-dark text-white rounded-xl font-medium text-lg hover:bg-rose-dark/90 transition-colors"
         >
           Continue

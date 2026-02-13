@@ -1,3 +1,5 @@
+import { playClick } from './kristelSounds';
+
 interface QuizIntroProps {
   onStart: () => void;
 }
@@ -19,7 +21,7 @@ const QuizIntro = ({ onStart }: QuizIntroProps) => {
         </p>
 
         <button
-          onClick={onStart}
+          onClick={() => { playClick(); onStart(); }}
           className="w-full py-4 bg-rose-dark text-white rounded-xl font-medium text-lg hover:bg-rose-dark/90 transition-colors"
         >
           Start Quiz

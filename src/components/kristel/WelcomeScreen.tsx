@@ -1,8 +1,14 @@
+import { useEffect } from 'react';
+import { playClick, playHeartbeat } from './kristelSounds';
+
 interface WelcomeScreenProps {
   onContinue: () => void;
 }
 
 const WelcomeScreen = ({ onContinue }: WelcomeScreenProps) => {
+  useEffect(() => {
+    playHeartbeat();
+  }, []);
   return (
     <div className="kristel-screen kristel-screen-welcome min-h-screen flex items-center justify-center px-6">
       <div className="w-full max-w-[420px] text-center">
@@ -27,7 +33,7 @@ const WelcomeScreen = ({ onContinue }: WelcomeScreenProps) => {
         </p>
 
         <button
-          onClick={onContinue}
+          onClick={() => { playClick(); onContinue(); }}
           className="w-full py-4 bg-rose-dark text-white rounded-xl font-medium text-lg hover:bg-rose-dark/90 transition-colors"
         >
           Continue
