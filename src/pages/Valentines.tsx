@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Heart, Share, Plus, X } from 'lucide-react';
 import '@/components/kristel/kristel-transitions.css';
 import MusicBox from '@/components/kristel/MusicBox';
@@ -27,6 +27,7 @@ const isStandalone = () => {
 };
 
 const Valentines = () => {
+  const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [secretTaps, setSecretTaps] = useState(0);
   const [showMusicBox, setShowMusicBox] = useState(false);
   const [showA2HS, setShowA2HS] = useState(false);
@@ -77,6 +78,30 @@ const Valentines = () => {
     return () => clearInterval(timer);
   }, []);
 
+  const clearHoldTimer = () => {
+    if (holdTimerRef.current) {
+      clearTimeout(holdTimerRef.current);
+      holdTimerRef.current = null;
+    }
+  };
+
+  const handleHeartHoldStart = () => {
+    clearHoldTimer();
+    holdTimerRef.current = setTimeout(() => {
+      holdTimerRef.current = null;
+      setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      setIsUnlocked(true);
+    }, 7000);
+  };
+
+  const handleHeartHoldEnd = () => {
+    clearHoldTimer();
+  };
+
+  useEffect(() => {
+    return () => clearHoldTimer();
+  }, []);
+
   const dismissA2HS = () => {
     setShowA2HS(false);
     localStorage.setItem(ADD_TO_HOME_DISMISSED_KEY, 'true');
@@ -116,7 +141,13 @@ const Valentines = () => {
     <div className="kristel-page min-h-screen bg-gradient-to-br from-rose-soft via-cream to-rose-soft overflow-hidden">
       <div className="kristel-screen kristel-screen-countdown min-h-screen flex items-center justify-center px-6">
         <div className="w-full max-w-[420px] text-center">
-          <div className="mb-6">
+          <div
+            className="mb-6 select-none touch-none"
+            onPointerDown={handleHeartHoldStart}
+            onPointerUp={handleHeartHoldEnd}
+            onPointerLeave={handleHeartHoldEnd}
+            onPointerCancel={handleHeartHoldEnd}
+          >
             <Heart className="w-12 h-12 mx-auto text-rose-dark fill-rose-dark animate-pulse" />
           </div>
 
