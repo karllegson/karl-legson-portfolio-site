@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Heart, Share, Plus, X } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { resumeAudio, playSuccess, playCelebration } from '@/components/kristel/kristelSounds';
+import { resumeAudio, playSuccess, playCelebration, loadWhenIMetUBuffer } from '@/components/kristel/kristelSounds';
 import '@/components/kristel/kristel-transitions.css';
 import MusicBox from '@/components/kristel/MusicBox';
 import ValentineLetterScreen from '@/components/kristel/ValentineLetterScreen';
@@ -295,6 +295,7 @@ const Valentines = () => {
                 onClick={() => {
                   resumeAudio();
                   playSuccess();
+                  loadWhenIMetUBuffer();
                   setShowLetter(true);
                 }}
                 className="mt-10 inline-flex items-center justify-center px-6 py-3 rounded-xl bg-rose-dark text-white font-semibold text-lg shadow-lg active:bg-rose-dark/90 transition-colors"

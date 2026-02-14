@@ -169,6 +169,40 @@ export const playCelebration = () => {
   } catch { /* silent fail */ }
 };
 
+// WhenIMetU buffer for music box - loaded via Web Audio (works on iOS where HTML audio fails)
+let whenIMetUBuffer: AudioBuffer | null = null;
+let whenIMetULoadPromise: Promise<AudioBuffer | null> | null = null;
+
+/** Call from user gesture (e.g. Ready for Gift button). Decodes WhenIMetU for Web Audio playback. */
+export const loadWhenIMetUBuffer = (): void => {
+  if (whenIMetUBuffer || whenIMetULoadPromise) return;
+  whenIMetULoadPromise = fetch('/WhenIMetU.m4a')
+    .then((r) => r.arrayBuffer())
+    .then((ab) => getAudioContext().decodeAudioData(ab))
+    .then((buf) => {
+      whenIMetUBuffer = buf;
+      return buf;
+    })
+    .catch(() => null);
+};
+
+/** Play WhenIMetU via Web Audio. Returns the source for stopping, or null if not ready/failed. */
+export const playWhenIMetU = (): AudioBufferSourceNode | null => {
+  try {
+    const buf = whenIMetUBuffer ?? null;
+    if (!buf) return null;
+    const ctx = getCtx();
+    if (ctx.state === 'suspended') ctx.resume();
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.connect(ctx.destination);
+    src.start(0);
+    return src;
+  } catch {
+    return null;
+  }
+};
+
 // Gentle heartbeat sound
 export const playHeartbeat = () => {
   try {

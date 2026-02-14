@@ -126,8 +126,6 @@ const ValentineLetterScreen = ({ onContinue }: ValentineLetterScreenProps) => {
             cardRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
           }`}
         >
-          {/* Preload WhenIMetU while user reads letter (fixes iOS music box) */}
-          <audio src="/WhenIMetU.m4a" preload="auto" className="hidden" aria-hidden />
           <button
             onClick={onContinue}
             className="w-full py-4 bg-rose-dark text-white rounded-xl font-medium text-lg active:bg-rose-dark/90 transition-colors flex items-center justify-center gap-2 shadow-lg"

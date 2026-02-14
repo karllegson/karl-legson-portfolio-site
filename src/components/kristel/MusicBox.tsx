@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Heart } from 'lucide-react';
-import { playTransition, resumeAudio, getAudioContext } from './kristelSounds';
+import { playTransition, resumeAudio, getAudioContext, playWhenIMetU, loadWhenIMetUBuffer } from './kristelSounds';
 
 interface MusicBoxProps {
   onContinue?: () => void;
@@ -96,7 +96,7 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
   const [isTurning, setIsTurning] = useState(false);
   const [canClickContinue, setCanClickContinue] = useState(false);
   const playerRef = useRef<NotePlayer | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const whenIMetUSourceRef = useRef<AudioBufferSourceNode | null>(null);
   const draggingRef = useRef(false);
   const lastAngleRef = useRef(0);
   const startPointerAngleRef = useRef(0);
@@ -119,7 +119,9 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
     playerRef.current = createNotePlayer(getAudioContext());
     return () => {
       playerRef.current?.stop();
-      audioRef.current?.pause();
+      try {
+        whenIMetUSourceRef.current?.stop();
+      } catch { /* already stopped */ }
     };
   }, []);
 
@@ -136,13 +138,12 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
     setIsTurning(true);
     startPointerAngleRef.current = getPointerAngle(e);
     startHandleAngleRef.current = lastAngleRef.current;
-    if (audioRef.current) {
-      try {
-        audioRef.current.play().catch(() => playerRef.current?.playPulse());
-      } catch {
-        playerRef.current?.playPulse();
-      }
+    const src = playWhenIMetU();
+    if (src) {
+      whenIMetUSourceRef.current = src;
+      src.onended = () => { whenIMetUSourceRef.current = null; };
     } else {
+      loadWhenIMetUBuffer(); // start load for next touch (user gesture)
       playerRef.current?.playPulse();
     }
   };
@@ -163,7 +164,10 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
       (e.target as HTMLElement).releasePointerCapture(e.pointerId);
       setIsTurning(false);
       playerRef.current?.stop();
-      audioRef.current?.pause();
+      try {
+        whenIMetUSourceRef.current?.stop();
+        whenIMetUSourceRef.current = null;
+      } catch { /* already stopped */ }
     }
   };
 
@@ -290,8 +294,6 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
             </>
           )}
         </div>
-
-        <audio ref={audioRef} src="/WhenIMetU.m4a" preload="auto" />
 
         {onContinue && (
           <button

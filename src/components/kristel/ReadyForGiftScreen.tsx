@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Heart } from 'lucide-react';
-import { playClick, playTransition } from './kristelSounds';
+import { playClick, playTransition, loadWhenIMetUBuffer } from './kristelSounds';
 
 interface ReadyForGiftScreenProps {
   onContinue: () => void;
@@ -24,14 +24,12 @@ const ReadyForGiftScreen = ({ onContinue }: ReadyForGiftScreenProps) => {
           draggable={false}
         />
         <button
-          onClick={() => { playClick(); onContinue(); }}
+          onClick={() => { playClick(); loadWhenIMetUBuffer(); onContinue(); }}
           className="w-full py-4 bg-rose-dark text-white rounded-xl font-medium text-lg active:bg-rose-dark/90 transition-colors flex items-center justify-center gap-2 shadow-lg"
         >
           Yes, I'm ready! <Heart className="w-5 h-5 fill-white" />
         </button>
       </div>
-      {/* Preload WhenIMetU so it's cached before user reaches Music Box (fixes iOS) */}
-      <audio src="/WhenIMetU.m4a" preload="auto" className="hidden" aria-hidden />
     </div>
   );
 };
