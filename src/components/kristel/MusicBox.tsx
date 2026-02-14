@@ -119,9 +119,7 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
     playerRef.current = createNotePlayer(getAudioContext());
     return () => {
       playerRef.current?.stop();
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
+      audioRef.current?.pause();
     };
   }, []);
 
