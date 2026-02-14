@@ -40,8 +40,7 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
 
   useEffect(() => {
     if (!onContinue) return;
-    const t = setTimeout(() => setCanClickContinue(true), 5000);
-    return () => clearTimeout(t);
+    setCanClickContinue(true);
   }, [onContinue]);
 
   const playMusic = () => {
