@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Heart } from 'lucide-react';
-import { playTransition, resumeAudio } from './kristelSounds';
+import { playTransition, resumeAudio, getAudioContext } from './kristelSounds';
 
 interface MusicBoxProps {
   onContinue?: () => void;
@@ -12,13 +12,14 @@ interface NotePlayer {
   playPulse: () => void;
 }
 
-const createNotePlayer = (): NotePlayer | null => {
-  if (typeof window === 'undefined' || !(window.AudioContext || (window as any).webkitAudioContext)) {
-    return null;
-  }
+const createNotePlayer = (sharedContext?: AudioContext): NotePlayer | null => {
+  if (typeof window === 'undefined') return null;
 
-  const AudioCtx = (window.AudioContext || (window as any).webkitAudioContext) as typeof AudioContext;
-  const ctx = new AudioCtx();
+  const ctx = sharedContext ?? (() => {
+    const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    return Ctx ? new Ctx() : null;
+  })();
+  if (!ctx) return null;
   let gain: GainNode | null = null;
   let intervalId: number | null = null;
 
@@ -115,7 +116,7 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
   }, []);
 
   useEffect(() => {
-    playerRef.current = createNotePlayer();
+    playerRef.current = createNotePlayer(getAudioContext());
     return () => {
       playerRef.current?.stop();
       if (audioRef.current) {

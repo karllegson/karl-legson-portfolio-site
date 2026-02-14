@@ -3,12 +3,15 @@
 
 let audioCtx: AudioContext | null = null;
 
-const getCtx = (): AudioContext => {
+export const getAudioContext = (): AudioContext => {
   if (!audioCtx) {
-    audioCtx = new AudioContext();
+    const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    audioCtx = new Ctx();
   }
   return audioCtx;
 };
+
+const getCtx = (): AudioContext => getAudioContext();
 
 // Resume audio context on first user interaction
 export const resumeAudio = () => {
