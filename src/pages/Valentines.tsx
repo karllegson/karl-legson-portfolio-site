@@ -64,7 +64,7 @@ const Valentines = () => {
 
   // Countdown timer (skips resetting when user used 7-sec hold bypass)
   useEffect(() => {
-    const targetDate = new Date('2026-02-14T18:00:00');
+    const targetDate = new Date('2026-02-14T00:00:00-08:00'); // Midnight Pacific (start of Valentine's Day)
 
     const calculateTimeLeft = () => {
       if (bypassUnlockedRef.current) {
@@ -282,8 +282,11 @@ const Valentines = () => {
             <TimeBlock value={timeLeft.seconds} label="secs" />
           </div>
 
-          <p className="text-lg text-gray-600 italic">
+          <p className="text-lg text-gray-600 italic mb-1">
             I promise… it's worth the wait
+          </p>
+          <p className="text-sm text-gray-500">
+            Feb 14, 2026 at 12:00 AM Pacific
           </p>
 
           {isUnlocked ? (

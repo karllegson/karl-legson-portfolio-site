@@ -24,7 +24,7 @@ const CountdownScreen = ({ onContinue, onSecretReset }: CountdownScreenProps) =>
   const [isUnlocked, setIsUnlocked] = useState(false);
 
   useEffect(() => {
-    const targetDate = new Date('2026-02-14T18:00:00');
+    const targetDate = new Date('2026-02-14T00:00:00-08:00'); // Midnight Pacific (start of Valentine's Day)
 
     const calculateTimeLeft = () => {
       const now = new Date();
