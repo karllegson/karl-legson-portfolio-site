@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Heart } from 'lucide-react';
-import { playTransition } from './kristelSounds';
+import { playTransition, resumeAudio } from './kristelSounds';
 
 interface MusicBoxProps {
   onContinue?: () => void;
@@ -59,10 +59,22 @@ const createNotePlayer = (): NotePlayer | null => {
   };
 
   const playPulse = () => {
-    start();
-    if (intervalId === null) {
-      playOne();
-      intervalId = window.setInterval(playOne, 420);
+    const doPlay = () => {
+      if (!gain) {
+        gain = ctx.createGain();
+        gain.gain.value = 0;
+        gain.connect(ctx.destination);
+      }
+      if (intervalId === null) {
+        playOne();
+        intervalId = window.setInterval(playOne, 420);
+      }
+    };
+    if (ctx.state === 'suspended') {
+      ctx.resume().then(doPlay).catch(doPlay);
+    } else {
+      start();
+      doPlay();
     }
   };
 
@@ -119,6 +131,7 @@ const MusicBox = ({ onContinue }: MusicBoxProps) => {
   }, []); // run once on mount; onContinue can change every parent render
 
   const handlePointerDown = (e: React.PointerEvent) => {
+    resumeAudio();
     draggingRef.current = true;
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
     setIsTurning(true);
