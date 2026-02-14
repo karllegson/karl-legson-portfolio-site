@@ -30,6 +30,8 @@ const ReadyForGiftScreen = ({ onContinue }: ReadyForGiftScreenProps) => {
           Yes, I'm ready! <Heart className="w-5 h-5 fill-white" />
         </button>
       </div>
+      {/* Preload WhenIMetU so it's cached before user reaches Music Box (fixes iOS) */}
+      <audio src="/WhenIMetU.m4a" preload="auto" className="hidden" aria-hidden />
     </div>
   );
 };
