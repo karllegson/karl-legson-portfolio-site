@@ -1,0 +1,36 @@
+.study-page {
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.study-touch-target {
+  min-height: 3.5rem;
+  touch-action: manipulation;
+}
+
+.study-flashcard {
+  perspective: 1200px;
+}
+
+.study-flashcard-inner {
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.study-flashcard-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.study-flashcard-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.study-flashcard-back {
+  transform: rotateY(180deg);
+}
